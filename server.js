@@ -10,6 +10,7 @@ const express = require('express')
 const app = express();
 const router = express.Router()//##
 const session = require("express-session");
+const  cookieParser = require('cookie-parser');
 
 
 let conf = require('./config.js');
@@ -70,9 +71,10 @@ app.use(
 
 
 app.use(express.static('public'))//can everyone get the dealer html? whynot?
-app.get('/', (req, res)=>{
-    res.redirect('/welcome.html')
-})
+
 // app.use('/googleAuth', googleAuth)
 // app.use('/netpassport',mynetPassport);
 // app.use('/auth', authFile)//!!!!
+const api = require('./r_api')
+app.use(cookieParser());
+app.use('/', api)

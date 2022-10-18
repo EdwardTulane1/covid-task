@@ -8,6 +8,31 @@
 </head>
 <body>
     <p>welcome!</p>
+    <span  id="signout"> <i class="">           
+        <span id="roundID"></span>
+        </i><span class="xicon-text" id="signInName"> </span> 
+        <a logout-url >sign out</a> 
+    </span>
+    <span login-url id="signin"> <!--The url for redirecting ahould be auth.userLogin why the '??'-->
+        <i class=""></i>
+        <span href="" act="signIn" id="xxsignInName" style="color:blue;text-decoration: underline;cursor: pointer;">sign in </span>
+    </span>
+    
+
+    <script type="module">
+        let conf = require('../config.js');
+        const baseurl=conf.BASE_URL;
+        const loginUrl=`https://${baseurl}/auth/userLogin`
+        const logoutUrl=`https://${baseurl}/auth/userOut`
+        
+        function setHref(selector,url, inout){
+            [...document.querySelectorAll(`${selector}`)].forEach((e)=>{e.href=`https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}`})
+        }
+    
+        setHref('[login-url]',loginUrl, `authTo/`);
+        setHref('[logout-url]',logoutUrl, `logout/`);
+    </script>
+
     
 </body>
 </html>

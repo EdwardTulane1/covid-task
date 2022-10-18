@@ -1,4 +1,8 @@
-// const baseurl='3.140.203.101';
+let conf = require('./config.js');
+const bjutils = require('./bjutils.js'); 
+
+bjutils.watchRequireFile('./config.js',conf);
+const baseurl=conf.BASE_URL;
 
 // var express = require('express');
 // var router = express.Router();
