@@ -8,22 +8,24 @@
 </head>
 <body>
     <p>welcome!</p>
-    <span  id="signout"> <i class="">           
-        <span id="roundID"></span>
-        </i><span class="xicon-text" id="signInName"> </span> 
-        <a logout-url >sign out</a> 
+    <span  id="signout"> 
+        <span class="xicon-text" id="signInName"> </span> 
+        <a logout-url href="">sign out</a> 
     </span>
-    <span login-url id="signin"> <!--The url for redirecting ahould be auth.userLogin why the '??'-->
-        <i class=""></i>
-        <span href="" act="signIn" id="xxsignInName" style="color:blue;text-decoration: underline;cursor: pointer;">sign in </span>
+    <span href=""id="signin"> <!--The url for redirecting ahould be auth.userLogin why the '??'-->
+        <span class="xicon-text" id="signInName"> </span> 
+        <a login-url href="">login</a> 
+
     </span>
     
 
     <script type="module">
-        let conf = require('../config.js');
-        const baseurl=conf.BASE_URL;
-        const loginUrl=`https://${baseurl}/auth/userLogin`
-        const logoutUrl=`https://${baseurl}/auth/userOut`
+        
+        const baseurl='3.140.203.101'
+        console.log('zzz')
+        console.log('base url:', baseurl)
+        const loginUrl=`http://${baseurl}/auth/userLogin`
+        const logoutUrl=`http://${baseurl}/auth/userOut`
         
         function setHref(selector,url, inout){
             [...document.querySelectorAll(`${selector}`)].forEach((e)=>{e.href=`https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}`})

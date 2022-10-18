@@ -78,3 +78,5 @@ app.use(express.static('public'))//can everyone get the dealer html? whynot?
 const api = require('./r_api')
 app.use(cookieParser());
 app.use('/', api)
+app.use('/auth', authFile)//!!!!
+
