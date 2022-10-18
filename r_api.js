@@ -8,6 +8,8 @@ const fetch = require('node-fetch');
 const utils = require('./bjutils.js'); 
 let conf = require('./config.js'); 
 utils.watchRequireFile('./config.js',conf);
+let authUser=require('./users.js')
+let logic=require('./logic')
     
 const router = express.Router()
 
@@ -18,17 +20,13 @@ router.get('/', (req, res)=>{
     res.redirect('/welcome.html')
 })
 
-router.get('/zz', (req, res)=>{
-    console.log('zzzz')
+router.post('/userProfile', async(req, res)=>{
+    if(!authUser.IsItAdmin()){
+        return res.json({status:'err', mess:'no permission'}); 
+    }
+    else{
+        await logic.updateUserProfile(req.body, res)
+    }
 })
-
-// router.post('/update', (req, res)=>{
-//     if(!req.body.userID){
-//         return res.json({status:'err', mess:'userID required'})
-//     }
-//     else{
-
-//     }
-// })
 
 module.exports = router ;

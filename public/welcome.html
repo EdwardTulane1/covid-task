@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #display-image{
+            width: 400px;
+            height: 225px;
+            border: 1px solid black;
+            background-position: center;
+            background-size: cover;
+}
+    </style>
 </head>
 <body>
     <p>welcome!</p>
@@ -17,6 +26,10 @@
         <a login-url href="">login</a> 
 
     </span>
+
+
+    <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg">
+    <div id="display-image"></div>  
     
 
     <script type="module">
@@ -33,6 +46,19 @@
     
         setHref('[login-url]',loginUrl, `authTo/`);
         setHref('[logout-url]',logoutUrl, `logout/`);
+
+
+
+
+        const image_input = document.querySelector("#image-input");
+        image_input.addEventListener("change", function() {
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                const uploaded_image = reader.result;
+                document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
     </script>
 
     
