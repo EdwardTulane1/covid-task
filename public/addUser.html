@@ -1,0 +1,180 @@
+<html>
+    <header>
+        <!-- <script src="/socket.io/socket.io.js"></script>        -->
+     
+        <style>
+               #signout,#signin {
+                display: none;
+                position: absolute;
+                right:0px;
+                font-size: 16px !important;
+            }
+            body[curUser] #signout{
+                display: inline-block;                
+            }
+            body:not([curUser]) #signin{
+                display: inline-block;               
+            }
+            #display-image{
+                width: 400px;
+                height: 225px;
+                border: 1px solid black;
+                background-position: center;
+                background-size: cover;
+            }
+        </style>
+    </header>
+    <body>
+
+<!--            
+            <span  id="signout"> <i class="">            
+                </i><span class="xicon-text" id="signInName"> </span> 
+                <a href="/googleAuth/logout/playerClient.html">sign out</a> 
+            </span>
+          <span href="/googleAuth/authTo/playerClient.html" id="signin"> 
+                <i class=""></i>
+                <a href="/googleAuth/authTo/playerClient.html" id="signInName">sign in </a>
+            </span> -->
+
+
+    <div style="display:inline-block;    vertical-align: top; ">
+        <div>first Name <input type="text" id="first_name" value=''></div>
+        <div>last Name <input type="text" id="last_name" value=''></div>
+        <div>City<input type="text" id="city" ></div>
+        <div>Street<input type="text" id="street" ></div>
+        <div>Apartment Number <input type="number" id="apartemnt_num"></div>
+        <div>birth date <input type="date" id="date_of_birth"></div>
+        <div>phone <input type="tel" id='tel'></div>
+        <div>home phone <input type="tel" id='telephone'> </div>
+        <div>photo  <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
+        <div id="display-image"></div>  
+
+    </div>   
+    <div><button> Apply </button></div>     
+    
+    </body>
+
+
+
+
+
+<script type="module">
+    import * as capi from './capi.js';
+    const attributes=['first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'tel', 'telephone', 'image-input']
+
+    
+    const image_input = document.querySelector("#image-input");
+    image_input.addEventListener("change", function() {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            const uploaded_image = reader.result;
+            document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+        });
+        reader.readAsDataURL(this.files[0]);
+    });
+
+
+    addEventListener('change',(e)=>{// whay table work from itself and player should make a change??????
+        let el=e.target
+        if (el.id=='dealerKey'){
+            dealerKey=el.value;     
+        }
+        if (el.id=='playerID'){
+            playerID=el.value;      
+            
+            capi.setPlayer(tableID,playerID)//????where he has tableID from?
+      
+        }
+        if (el.id=='tableID'){
+            tableID=el.value;
+            capi.setTable(tableID);
+            capi.setPlayer(tableID,playerID)
+        }
+        // if (el.id=='seatNo'){
+        //     seatNo=el.value;
+        //     capi.setTable(tableID);
+        // }
+        if (el.id=='strategy'){
+            strategy=el.value;
+            capi.setStrategy(playerID,tableID,strategy);
+        }
+    })
+
+    addEventListener('click',e=>{
+        let ect;
+        if (!e.target || !e.target.getAttribute || !(ect=e.target.getAttribute('act'))){//?????last part?
+            return;
+        }
+        let p=(
+            ect == 'apply' ? updateUser(playerID,tableID,$$('betAmount').value, seatNo.value) :
+            ect == 'join' ? capi.joinTable(playerID,tableID) :
+            ect == 'leave' ? capi.leaveTable(playerID,tableID) :
+            ect == 'stand' ? capi.stand(playerID,tableID) :
+            ect == 'hit' ? capi.hit(playerID,tableID) :
+            ect == 'split' ? capi.split(playerID,tableID) :
+            ect == 'double' ? capi.double(playerID,tableID) :
+            ect == 'insurance' ? capi.insurance(playerID,tableID) :
+            ect == 'evenMoney' ? capi.evenMoney(playerID,tableID) : 
+            ect == 'getState' ? capi.getState(playerID,tableID) :
+            ect == 'drawCard' ? capi.drawCard(tableID,$$('cardVal').value,dealerKey) :
+            ect == 'resetTable' ? capi.resetTable(tableID,dealerKey) :
+            ect == 'lockTble' ? capi.dealerTableDown(tableID,dealerKey,'locked') :
+            ect == 'unlockTble' ? capi.dealerTableDown(tableID,dealerKey,'active') :        
+            ect == 'sideBetPPair' ? capi.sideBet(playerID,tableID,$$('PPairbetAmount').value,"sideBetPpair") :
+            ect == 'sideBet21P3' ? capi.sideBet(playerID,tableID,$$('21P3betAmount').value,"sideBet21p3") : 
+            ect == 'dealerMess' ? capi.dealerMess(playerID,tableID,$$('messTxt').value) :   
+            ect == 'betBehind' ? capi.betBehind(playerID,tableID,$$('betAmount').value, $$('allowInsurance').checked, $$('allowDouble').checked) :0
+        );
+        
+        p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
+    })
+
+    addEventListener('message',e=>{
+        if (!e.data || !e.data.newStatus){ //not a new state message from capi
+            return;
+        }
+       // console.log(e.data)
+        renderState(e.data)
+
+        // capi.getProfile().then(res=>{
+        //     if (res.displayName == document.body.getAttribute("curUser")){return;}; //no change
+
+        //     if (res.displayName){
+        //         $$("signInName").textContent=`${res.displayName}`;
+        //         document.body.setAttribute("curUser",res.displayName);
+        //     }else{
+        //         document.body.removeAttribute("curUser");
+        //     }
+        // })
+    })
+
+    function renderState(state){
+        if(!state.newPrivatestat){
+            $$("json").innerHTML=JSON.stringify(state, undefined, 2)
+        }
+        else{
+            $$("prjson").innerHTML=JSON.stringify(state, undefined, 2)
+
+        }    
+
+    }
+
+    function updateUser(){
+        let UserData={}
+        attributes.forEach(et=>{
+            data[et]=getElementById(et).value
+        })
+        capi.setUser(userID, UserData)
+    }
+
+    // function postMessege(msg, str){
+    //     $$("res").innerHTML=JSON.stringify(res, undefined, 2)
+
+    // }
+
+
+
+    function $$(str){return document.getElementById(str)}
+
+</script>
+</html> 

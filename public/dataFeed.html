@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>secret</h1> 
+    <span  id="signout"> 
+        <span class="xicon-text" id="signInName"> </span> 
+        <a logout-url href="">sign out</a> 
+    </span>
+
+
+    <script type="module">
+        
+        const baseurl='3.140.203.101'
+        console.log('zzz')
+        console.log('base url:', baseurl)
+        const loginUrl=`http://${baseurl}/auth/userLogin`
+        const logoutUrl=`http://${baseurl}/auth/userOut`
+        
+        function setHref(selector,url, inout){
+            [...document.querySelectorAll(`${selector}`)].forEach((e)=>{e.href=`https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}`})
+        }
+    
+        setHref('[login-url]',loginUrl, `authTo/`);
+        setHref('[logout-url]',logoutUrl, `logout/`);
+    </script>
+</body>
+</html>
