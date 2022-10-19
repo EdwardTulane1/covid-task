@@ -25,8 +25,9 @@ async function createUser(userID, data):Promise<void>{
 
 async function  getProfile(id):Promise<Profile|null> {
     let profile=await database.runQuery(queries.getProfile(id))
-    if(profile.length>0){
-        return profile[0]
+    console.log('profile, ', profile)
+    if(profile.rows.length>0){
+        return profile.rows[0]
     }
     return null;
 }
@@ -55,5 +56,6 @@ async function createProfile(userID, data){
 
 module.exports={ 
     setUserProfile,
-    getProfiles
+    getProfiles,
+    getProfile
 }

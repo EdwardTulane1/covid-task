@@ -38,8 +38,9 @@ function createUser(userID, data) {
 function getProfile(id) {
     return __awaiter(this, void 0, void 0, function* () {
         let profile = yield database.runQuery(queries.getProfile(id));
-        if (profile.length > 0) {
-            return profile[0];
+        console.log('profile, ', profile);
+        if (profile.rows.length > 0) {
+            return profile.rows[0];
         }
         return null;
     });
@@ -47,6 +48,12 @@ function getProfile(id) {
 function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.runQuery(queries.getProfiles());
+        return profiles.rows;
+    });
+}
+function getProfilesPagination(pageNum) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const profiles = yield database.runQuery(queries.getProfilesPage(pageNum));
         return profiles.rows;
     });
 }
@@ -66,5 +73,6 @@ function createProfile(userID, data) {
 }
 module.exports = {
     setUserProfile,
-    getProfiles
+    getProfiles,
+    getProfile
 };

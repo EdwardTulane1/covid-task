@@ -26,7 +26,6 @@ async function runQuery(sql){
     console.log(sql)
     try{
         const res=await pool.query(sql)
-        console.log('res,', res)
         return res
     }
     catch(e){

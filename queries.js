@@ -23,10 +23,10 @@ const create_vaccins_table= `create table IF NOT EXISTS vaccins(
 const get_profiles=`SELECT * FROM patients`
 
 const getPatientVax=(id)=>{
-    return `SELECT * FROM vaccins WHERE id=${id}`
+    return `SELECT * FROM vaccins WHERE id='${id}'`
 }
 const getProfile=(id)=>{
-    return `SELECT * FROM patients WHERE id=${id}`
+    return `SELECT * FROM patients WHERE id = '${id}'`
 }
 
 const getProfiles=()=>{
@@ -59,5 +59,6 @@ module.exports={
     getPatientVax,
     getProfiles,
     getProfilesPage,
+    getProfile
 
 }
