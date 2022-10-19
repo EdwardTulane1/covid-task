@@ -124,10 +124,10 @@
     async function updateUser() {
         let UserData = {}
         attributes.forEach(et => {
-            data[et] = getElementById(et).value
+            UserData[et] = $$(et).value
         })
         console.log('userDate:  ', UserData)
-        capi.setUser(userID, UserData)
+        capi.setUser($$('id'), UserData)
     }
 
     async function deleteUser(userID) {
