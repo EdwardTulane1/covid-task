@@ -23,7 +23,7 @@ const create_vaccins_table= `create table IF NOT EXISTS vaccins(
 const create_postitive_negative_tables=`create table IF NOT EXISTS covid_test_result(
     id VARCHAR(60) NOT NULL,
     test_date DATE NOT NULL,
-    result VARCHAR(10) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative')
+    result VARCHAR(15) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative'))
 );`
 
 const get_profiles=`SELECT * FROM patients`
