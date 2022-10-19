@@ -44,8 +44,22 @@
             let prfilesList=document.getElementById('profiles')
             prfilesList.appendChild(li);
 
-            li.innerHTML=JSON.stringify(element);
+            li.innerHTML=`<div class=profile act=getProfile id=${element.id}>${element.first_name}</div>`
+            // JSON.stringify(element);
         }
+
+        addEventListener('click', (e)=>{
+            let ect;
+            if (!e.target || !e.target.getAttribute || !(ect=e.target.getAttribute('act'))){//?????last part?
+                return;
+            }
+            let p=(
+                ect == 'getProfile' ? capi.getProfile(e.target.id) :0
+            );
+            
+            p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
+            
+        })
     </script>
 </body>
 </html>
