@@ -56,6 +56,8 @@ router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
 })
 
 router.post('/setUser', async(req, res)=>{
+    console.log('set user')
+    console.log(req.body)
     if(!authUser.IsItAdmin(req)){
         return res.json({status:'err', mess:'no permission'}); 
     }

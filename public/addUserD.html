@@ -124,14 +124,14 @@
 
     async function updateUser() {
         let UserData = {}
-        attributes.forEach(et => {
+        must_attributes.forEach(et => {
             UserData[et] = $$(et).value
             if(!UserData[et]){
                 //return
             }
         })
         console.log('userDate:  ', UserData)
-        capi.setUser($$('id'), UserData)
+        capi.setUser($$('id'), {data:UserData})
     }
 
     async function deleteUser(userID) {

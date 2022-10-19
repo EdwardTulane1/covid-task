@@ -6,8 +6,12 @@ function userAction(command, ...extra){
     let promis=new Promise((resolve,reject)=>{
         let url=`/api/${command}`;
         console.log("URL:",url)
-        if(extra.data){//post
-            fetch(url,{credentials: "same-origin", method:'POST', body: JSON.stringify(data)}).then(response => {
+        if(extra && extra[0] &&extra[0] && extra[0].data){//post
+            console.log('data to send,', extra[0].data)
+            fetch(url,{ headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }, credentials: "same-origin", method:'POST', body: JSON.stringify(extra[0].data)}).then(response => {
                 return response.json();
             }).then(data => {               
                 resolve(data);
@@ -37,7 +41,7 @@ function userAction(command, ...extra){
 
 async function setUser(userID,data){
     data.userID=userID
-    return  await userAction('setUset',data);
+    return  await userAction('setUser',data);
 }
 
 async function deleteUser(userID){
