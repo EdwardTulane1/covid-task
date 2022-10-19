@@ -45,7 +45,7 @@
         <div>Street<input type="text" id="street" ></div>
         <div>Apartment Number <input type="number" id="apartemnt_num"></div>
         <div>birth date <input type="date" id="date_of_birth"></div>
-        <div>phone <input type="tel" id='tel'></div>
+        <div>phone <input type="tel" id='phone'></div>
         <div>home phone <input type="tel" id='telephone'> </div>
         <div>photo  <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
         <div id="display-image"></div>  
@@ -64,7 +64,7 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const attributes=['id','first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'tel', 'telephone']
+    const attributes=['id','first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'phone', 'telephone']
 
     
     const image_input = document.querySelector("#image-input");

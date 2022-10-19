@@ -41,13 +41,7 @@ const getProfiles=()=>{
     return `SELECT id, first_name, last_name, img FROM patients`
 }
 
-const all_queries={
-    get_profile: `SELECT * FROM patients WHERE id = '{id}'`,
-    get_profiles: `SELECT * FROM patients`,
-    get_vaccins: `SELECT * FROM vaccins WHERE id = '{id}'`,
-    set_user: `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date) VALUES ('{id}', '{first_name}', '{last_name}', '{phone}', '{telephone}', '{city}', '{street}', '{apartement_num}', '{birth_date}')`
-    
-}
+
 
 function setQuery(query,data,info={}){ //data={userid:12,tableid:55,sum:17.....}
     for (let key in data){
@@ -55,6 +49,16 @@ function setQuery(query,data,info={}){ //data={userid:12,tableid:55,sum:17.....}
         query=query.replace(re,data[key])
     }    
     return query;
+}
+
+function getPositive(start_date, end_date){
+    `SELECT * FROM covid_test_result;`
+}
+
+
+function setProfile(data){
+    console.log('data to inset ', data , Number(data.apartemnt_num), data.date_of_birth)
+    return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${Number(data.apartemnt_num)}', '${data.date_of_birth}')`
 }
 
 async function  getProfilesPage(pageNum){
@@ -70,6 +74,8 @@ module.exports={
     getPatientVax,
     getProfiles,
     getProfilesPage,
-    getProfile
+    getProfile,
+    setProfile,
+    getPositive
 
 }

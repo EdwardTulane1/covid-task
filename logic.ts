@@ -54,7 +54,23 @@ async function setUserProfile(data, res){
 }
 
 async function createProfile(userID, data){
+    console.log(queries.setProfile( data))
+    await database.runQuery(queries.setProfile( data))
 
+
+}
+
+async function positiveStats(){
+    const tests=await database.runQuery(queries.get_positive())
+    tests.sort((x,y)=>{
+        new Date(x.test_date).getTime()- new Date(y.test_date).getTime();
+    })
+    var Difference_In_Days =(new Date(tests[tests.length-1].test_date).getTime()- new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
+    tests.map((test,i)=>{
+        if(test.result=='positive'){
+            
+        }
+    })
 
 }
 
