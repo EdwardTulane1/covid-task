@@ -38,6 +38,7 @@
 
 
     <div style="display:inline-block;    vertical-align: top; ">
+        <div>id <input type="text"></div>
         <div>first Name <input type="text" id="first_name" value=''></div>
         <div>last Name <input type="text" id="last_name" value=''></div>
         <div>City<input type="text" id="city" ></div>
@@ -50,7 +51,10 @@
         <div id="display-image"></div>  
 
     </div>   
-    <div><button> Apply </button></div>     
+    <div><button act="update"> update </button></div>    
+    <div><button act="create"> create </button></div>    
+    <div><button act="delete"> delete </button></div>     
+
     
     </body>
 
@@ -106,24 +110,9 @@
             return;
         }
         let p=(
-            ect == 'apply' ? updateUser(playerID,tableID,$$('betAmount').value, seatNo.value) :
-            ect == 'join' ? capi.joinTable(playerID,tableID) :
-            ect == 'leave' ? capi.leaveTable(playerID,tableID) :
-            ect == 'stand' ? capi.stand(playerID,tableID) :
-            ect == 'hit' ? capi.hit(playerID,tableID) :
-            ect == 'split' ? capi.split(playerID,tableID) :
-            ect == 'double' ? capi.double(playerID,tableID) :
-            ect == 'insurance' ? capi.insurance(playerID,tableID) :
-            ect == 'evenMoney' ? capi.evenMoney(playerID,tableID) : 
-            ect == 'getState' ? capi.getState(playerID,tableID) :
-            ect == 'drawCard' ? capi.drawCard(tableID,$$('cardVal').value,dealerKey) :
-            ect == 'resetTable' ? capi.resetTable(tableID,dealerKey) :
-            ect == 'lockTble' ? capi.dealerTableDown(tableID,dealerKey,'locked') :
-            ect == 'unlockTble' ? capi.dealerTableDown(tableID,dealerKey,'active') :        
-            ect == 'sideBetPPair' ? capi.sideBet(playerID,tableID,$$('PPairbetAmount').value,"sideBetPpair") :
-            ect == 'sideBet21P3' ? capi.sideBet(playerID,tableID,$$('21P3betAmount').value,"sideBet21p3") : 
-            ect == 'dealerMess' ? capi.dealerMess(playerID,tableID,$$('messTxt').value) :   
-            ect == 'betBehind' ? capi.betBehind(playerID,tableID,$$('betAmount').value, $$('allowInsurance').checked, $$('allowDouble').checked) :0
+            ect == 'update' ? updateUser() :
+            ect == 'create' ? createUser() :
+            ect == 'delete' ? deleteUser()  : 0
         );
         
         p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
@@ -159,19 +148,13 @@
 
     }
 
-    function updateUser(){
+    async function updateUser(){
         let UserData={}
         attributes.forEach(et=>{
             data[et]=getElementById(et).value
         })
         capi.setUser(userID, UserData)
     }
-
-    // function postMessege(msg, str){
-    //     $$("res").innerHTML=JSON.stringify(res, undefined, 2)
-
-    // }
-
 
 
     function $$(str){return document.getElementById(str)}

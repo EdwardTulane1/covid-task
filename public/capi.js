@@ -33,8 +33,13 @@ function userAction(command, ...extra){
 }
 
 
-async function updateUser(userID,data){
-    return  userAction('update',data);
+async function setUser(userID,data){
+    data.userID=userID
+    return  userAction('setUset',data);
+}
+
+async function deleteUser(userID){
+    return userAction('deleteUser', userID)
 }
 
 async function getProfiles(){

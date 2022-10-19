@@ -8,7 +8,9 @@ const create_patients_table=`create table IF NOT EXISTS patients(
     apartement_num  INT NOT NULL,
     birth_date DATE NOT NULL,
     phone text not null,
-    telephone TEXT NOT NULL
+    telephone TEXT NOT NULL,
+    img bytea
+
 );`
 
 const create_vaccins_table= `create table IF NOT EXISTS vaccins(
