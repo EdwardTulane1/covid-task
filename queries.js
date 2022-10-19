@@ -10,7 +10,6 @@ const create_patients_table=`create table IF NOT EXISTS patients(
     phone text not null,
     telephone TEXT NOT NULL,
     img bytea
-
 );`
 
 const create_vaccins_table= `create table IF NOT EXISTS vaccins(
