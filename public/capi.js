@@ -1,10 +1,10 @@
-const baseurl='3.140.203.101'
+// const baseUrl='3.140.203.101'
 
 
 
 function userAction(command, ...extra){
     let promis=new Promise((resolve,reject)=>{
-        let url=`${baseUrl}/api/${command}`;
+        let url=`/api/${command}`;
         console.log("URL:",url)
         if(extra.data){//post
             fetch(url,{credentials: "same-origin", method:'POST', body: JSON.stringify(data)}).then(response => {
@@ -44,4 +44,8 @@ async function deleteUser(userID){
 
 async function getProfiles(){
     return userAction('getProfiles')
+}
+
+export{
+    getProfiles,
 }

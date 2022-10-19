@@ -15,18 +15,21 @@ const router = express.Router()
 
 router.use(express.json());
 
-router.get('/', (req, res)=>{
-    console.log('rediecting')
-    res.redirect('/welcome.html')
+
+
+router.get('/getProfiles', async(req, res)=>{
+    await logic.getProfiles(req.body, res)
 })
 
-router.post('/userProfile', async(req, res)=>{
-    if(!authUser.IsItAdmin()){
+router.post('/setUser', async(req, res)=>{
+    if(!authUser.IsItAdmin(req)){
         return res.json({status:'err', mess:'no permission'}); 
     }
     else{
-        await logic.updateUserProfile(req.body, res)
+        await logic.setUserProfile(req.body, res)
     }
 })
+
+
 
 module.exports = router ;

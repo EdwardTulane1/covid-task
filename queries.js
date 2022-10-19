@@ -27,6 +27,10 @@ const getProfile=(id)=>{
     return `SELECT * FROM patients WHERE id=${id}`
 }
 
+const getProfiles=()=>{
+    return `SELECT * FROM patients`
+}
+
 module.exports={
     create_patients_table,
     create_vaccins_table,
