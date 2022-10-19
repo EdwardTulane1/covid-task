@@ -12,31 +12,57 @@ const database = require('./database.js');
 const queries = require('./queries.js');
 function updateUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!data.userID) {
-            return res.json({ status: 'err', mess: 'no user ID' });
-        }
-        else {
-            if (yield userExists())
-                [
-                    yield createUser(data)
-                ];
-        }
+        // if(!data.userID){
+        //     return res.json({status:'err', mess:'no user ID'})
+        // }
+        // else{
+        //     if(await userExists())[
+        //         await createUser(data)
+        //     ]
+        // }
     });
 }
-function userExists() {
+function userExists(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        return true;
+        if (yield getProfile(id))
+            return true;
+        return false;
     });
 }
 function createUser(data) {
     return __awaiter(this, void 0, void 0, function* () {
     });
 }
+function getProfile(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let profile = yield database.runQuery(queries.getProfile(id));
+        if (profile.length > 0) {
+            return profile[0];
+        }
+        return null;
+    });
+}
 function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
-        let profile = yield database.runQuery(queries.getProfile());
+        const profiles = yield database.runQuery(queries.getProfiles());
+        return profiles.rows;
+    });
+}
+function setUserProfile(data, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (yield userExists(data.id)) {
+            yield updateUserProfile(data.id, data);
+        }
+        else {
+            yield createProfile(data.id, data);
+        }
+    });
+}
+function createProfile(userID, data) {
+    return __awaiter(this, void 0, void 0, function* () {
     });
 }
 module.exports = {
-    updateUserProfile
+    setUserProfile,
+    getProfiles
 };

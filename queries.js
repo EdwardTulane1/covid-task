@@ -1,4 +1,6 @@
 
+
+
 const create_patients_table=`create table IF NOT EXISTS patients(
     id VARCHAR(60) primary key UNIQUE,
     first_name VARCHAR(50) NOT NULL,
@@ -36,5 +38,6 @@ module.exports={
     create_vaccins_table,
     get_profiles,
     getPatientVax,
+    getProfiles,
 
 }

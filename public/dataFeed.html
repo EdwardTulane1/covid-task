@@ -32,8 +32,12 @@
         setHref('[login-url]',loginUrl, `authTo/`);
         setHref('[logout-url]',logoutUrl, `logout/`);
 
-        profiles=await capi.getProfiles()
-        profiles.forEach(renderProductList)
+        let data=await capi.getProfiles()
+        console.log('zzzz', data)
+        if(data.status=="OK"){
+            data.profiles.forEach(renderProductList)
+        }
+        
         function renderProductList(element, index, arr) {
             var li = document.createElement('li');
             li.setAttribute('class','profile');

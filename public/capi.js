@@ -35,15 +35,15 @@ function userAction(command, ...extra){
 
 async function setUser(userID,data){
     data.userID=userID
-    return  userAction('setUset',data);
+    return  await userAction('setUset',data);
 }
 
 async function deleteUser(userID){
-    return userAction('deleteUser', userID)
+    return await userAction('deleteUser', userID)
 }
 
 async function getProfiles(){
-    return userAction('getProfiles')
+    return await userAction('getProfiles')
 }
 
 export{

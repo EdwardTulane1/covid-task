@@ -23,13 +23,17 @@ pool.query(queries.create_vaccins_table, (err, res)=>{
 })
 
 async function runQuery(sql){
-    await pool.query(sql, (err, res)=>{
-        if(err){
-            console.log(err)
-            return false;
-        }
-        else return true;
-    })
+    console.log(sql)
+    try{
+        const res=await pool.query(sql)
+        console.log('res,', res)
+        return res
+    }
+    catch(e){
+        console.log(e);
+        return false;
+    }
+
 }
 
 module.exports={

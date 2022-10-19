@@ -9,7 +9,7 @@ const utils = require('./bjutils.js');
 let conf = require('./config.js'); 
 utils.watchRequireFile('./config.js',conf);
 let authUser=require('./users.js')
-let logic=require('./logic')
+let logic=require('./logic.js')
     
 const router = express.Router()
 
@@ -18,7 +18,14 @@ router.use(express.json());
 
 
 router.get('/getProfiles', async(req, res)=>{
-    await logic.getProfiles(req.body, res)
+    console.log('in here')
+    const profiles=await logic.getProfiles(req.body, res)
+    if(profiles){
+        return res.json({status:"OK", profiles:profiles})
+    }
+    else{
+        return res.json({status:'err'})
+    }
 })
 
 router.post('/setUser', async(req, res)=>{
