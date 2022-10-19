@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="addUserD.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
@@ -12,11 +13,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div class="row">
         <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">        <div>photo  <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
-            <span class="font-weight-bold">ID<input type="text" class="form-control"  value=""> </span></div>
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
+                    width="150px"
+                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <div>photo <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
+                <span class="font-weight-bold">ID<input type="text" class="form-control" value="" id="id"> </span>
+            </div>
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
@@ -24,33 +30,50 @@
                     <h4 class="text-right">Profile Settings</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">First name</label><input type="text" class="form-control" placeholder="first name" value=""></div>
-                    <div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control" value="" placeholder="last name"></div>
+                    <div class="col-md-6"><label class="labels">First name</label><input type="text"
+                            class="form-control" placeholder="first name" value="" id="first_name"></div>
+                    <div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control"
+                            value="" placeholder="last name" id="last_name"></div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                    <div class="col-md-12"><label class="labels">Home Number</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                    <div class="col-md-12"><label class="labels">City</label><input type="text" class="form-control"  value=""></div>
-                    <div class="col-md-12"><label class="labels">Street</label><input type="text" class="form-control"  value=""></div>
-                    <div class="col-md-12"><label class="labels">Apartment Num</label><input type="text" class="form-control"  value=""></div>
-                    <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control"  value=""></div>
-                    <div class="col-md-12"><label class="labels">Birth Date</label><input type="date" class="form-control"  value=""></div>
+                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text"
+                            class="form-control" placeholder="enter phone number" value="" id="tel"></div>
+                    <div class="col-md-12"><label class="labels">Home Number</label><input type="text"
+                            class="form-control" placeholder="enter phone number" value="" id="telephone"></div>
+                    <div class="col-md-12"><label class="labels" >City</label><input type="text" class="form-control"
+                            value="" id="city"></div>
+                    <div class="col-md-12"><label class="labels" >Street</label><input type="text" class="form-control"
+                            value="" id="street"></div>
+                    <div class="col-md-12"><label class="labels">Apartment Num</label><input type="text"
+                            class="form-control" value="" id="apartemnt_num"></div>
+                    <div class="col-md-12"><label class="labels">Birth Date</label><input type="date"
+                            class="form-control" value="" id="date_of_birth"></div>
                 </div>
                 <!-- <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
                     <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
                 </div> -->
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" act="update">Save
+                        Profile</button><button class="btn btn-primary profile-button" type="button" act="delete" style="margin-left:3%">delete
+                            Profile</button></div>
+     
             </div>
         </div>
         <div class="col-md-4">
             <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience"><span>Covid Data</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
-                <div class="col-md-12"><label class="labels">Positive Date</label><input type="date" class="form-control" placeholder="experience" value=""></div> <br>
-                <div class="col-md-12"><label class="labels">Negative Date</label><input type="date" class="form-control" placeholder="additional details" value=""></div>
-                <div class="col-md-12"><label class="labels">Vaccin</label><input type="date" class="form-control" value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
-                <div class="col-md-12"><label class="labels">Vaccin</label><input type="date" class="form-control" value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
-                <div class="col-md-12"><label class="labels">Vaccin</label><input type="date" class="form-control" value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
+                <div class="d-flex justify-content-between align-items-center experience"><span>Covid Data</span><span
+                        class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div>
+                <br>
+                <div class="col-md-12"><label class="labels">Positive Date</label><input type="date"
+                        class="form-control" placeholder="experience" value=""></div> <br>
+                <div class="col-md-12"><label class="labels">Negative Date</label><input type="date"
+                        class="form-control" placeholder="additional details" value=""></div>
+                <div class="col-md-12"><label class="labels">Vaccin 1</label><input type="date" class="form-control"
+                        value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
+                <div class="col-md-12"><label class="labels">Vaccin 2</label><input type="date" class="form-control"
+                        value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
+                <div class="col-md-12"><label class="labels">Vaccin 3</label><input type="date" class="form-control"
+                        value=""><input type="text" class="form-control" placeholder="factory" value=""></div>
 
             </div>
         </div>
@@ -58,5 +81,74 @@
     </div>
     </div>
     </div>
+
+
 </body>
+
+
+<script type="module">
+    import * as capi from './capi.js';
+    const attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'tel', 'telephone']
+
+
+    const image_input = document.querySelector("#image-input");
+    image_input.addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            const uploaded_image = reader.result;
+            console.log('uploaded img', uploaded_image)
+            console.log('zzz', base64ToHex(uploaded_image))
+            document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+        });
+        reader.readAsDataURL(this.files[0]);
+    });
+
+
+
+    addEventListener('click', e => {
+        let ect;
+        if (!e.target || !e.target.getAttribute || !(ect = e.target.getAttribute('act'))) {//?????last part?
+            return;
+        }
+        let p = (
+            ect == 'update' ? updateUser() :
+                ect == 'create' ? updateUser() :
+                    ect == 'delete' ? deleteUser() : 0
+        );
+
+        p.then((res) => { $$("res").innerHTML = JSON.stringify(res, undefined, 2) })
+    })
+
+
+
+    async function updateUser() {
+        let UserData = {}
+        attributes.forEach(et => {
+            data[et] = getElementById(et).value
+        })
+        console.log('userDate:  ', UserData)
+        capi.setUser(userID, UserData)
+    }
+
+    async function deleteUser(userID) {
+        capi.deleteUser(userID)
+    }
+
+    function base64ToHex(str) {
+        const raw = atob(str.split(",")[1]);
+        let result = '';
+        for (let i = 0; i < raw.length; i++) {
+            const hex = raw.charCodeAt(i).toString(16);
+            result += (hex.length === 2 ? hex : '0' + hex);
+        }
+        return result.toUpperCase();
+    }
+
+
+
+    function $$(str) { return document.getElementById(str) }
+
+</script>
+
+
 </html>
