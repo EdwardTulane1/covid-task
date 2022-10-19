@@ -12,6 +12,9 @@
         <span class="xicon-text" id="signInName"> </span> 
         <a logout-url href="">sign out</a> 
     </span>
+    <div id="profiles">
+        <li></li>
+    </div>
 
 
     <script type="module">
@@ -28,6 +31,17 @@
     
         setHref('[login-url]',loginUrl, `authTo/`);
         setHref('[logout-url]',logoutUrl, `logout/`);
+
+        profiles=await capi.getProfiles()
+        profiles.forEach(renderProductList)
+        function renderProductList(element, index, arr) {
+            var li = document.createElement('li');
+            li.setAttribute('class','profile');
+
+            ul.appendChild(li);
+
+            li.innerHTML=li.innerHTML + element;
+        }
     </script>
 </body>
 </html>

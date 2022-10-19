@@ -2,12 +2,12 @@ module.exports =  {
 
     BASE_URL:'3.140.203.101',
     managers:['opps.zbeda@gmail.com'],
-    mysql: {
+    pg: {
         connectionLimit : 10,
         host     : '127.0.0.1',
-        user     : 'root',
-        password : 'W!zsoft',
-        multipleStatements:true,
-        database : 'crab'
+        user     : 'postgres',
+        password : 'texpkur333',
+        database : 'covid',
+        port:'5432',
     }
 }

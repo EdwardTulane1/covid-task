@@ -1,4 +1,5 @@
 let conf = require('./config.js');
+const bjutils=require('./bjutils')
 bjutils.watchRequireFile('./config.js',conf);
 
 

@@ -3,6 +3,7 @@ const fs = require('fs');
 var bodyParser = require('body-parser');
 const authFile = require('./auth');//!!!
 const bjutils = require('./bjutils.js');
+const databas=require('./database')
 
 
 
