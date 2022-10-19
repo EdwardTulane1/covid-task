@@ -17,8 +17,10 @@ function userAction(command, ...extra){
         }
         else{//get
             for (let arg of extra){
+                console.log('arg', arg)
                 url+=`/${arg}`
             }
+            console.log(url)
             fetch(url,{credentials: "same-origin"}).then(response => {
                 return response.json();
             }).then(data => {               
@@ -51,9 +53,11 @@ async function getProfilesPagination(pageNum){
 }
 
 async function getProfile(userID){
-
+    console.log('looking for profile', userID)
+    return await userAction('getProfile', userID)
 }
 
 export{
     getProfiles,
+    getProfile
 }

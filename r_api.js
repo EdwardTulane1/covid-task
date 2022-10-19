@@ -30,6 +30,20 @@ router.get('/getProfiles', async(req, res)=>{
 
 
 
+router.get('/getProfile/:userID', async(req, res)=>{
+    console.log('in here')
+    const profiles=await logic.getProfile(req.params.userID)
+    if(profiles){
+        return res.json({status:"OK", profiles:profiles})
+    }
+    else{
+        return res.json({status:'err'})
+    }
+})
+
+
+
+
 router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
     console.log('in here')
     const profiles=await logic.getProfilesPagination(req.params.pageNum)

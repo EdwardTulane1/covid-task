@@ -43,8 +43,7 @@
             li.setAttribute('class','profile');
             let prfilesList=document.getElementById('profiles')
             prfilesList.appendChild(li);
-
-            li.innerHTML=`<div class=profile act=getProfile id=${element.id}>${element.first_name}</div>`
+            li.innerHTML=`<div class=profile  id=${element.id}>${element.first_name}<button act=getProfile profile_id=${element.id}>view</button></div>`
             // JSON.stringify(element);
         }
 
@@ -54,7 +53,7 @@
                 return;
             }
             let p=(
-                ect == 'getProfile' ? capi.getProfile(e.target.id) :0
+                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) :0
             );
             
             p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
