@@ -28,6 +28,19 @@ router.get('/getProfiles', async(req, res)=>{
     }
 })
 
+
+
+router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
+    console.log('in here')
+    const profiles=await logic.getProfilesPagination(req.params.pageNum)
+    if(profiles){
+        return res.json({status:"OK", profiles:profiles})
+    }
+    else{
+        return res.json({status:'err'})
+    }
+})
+
 router.post('/setUser', async(req, res)=>{
     if(!authUser.IsItAdmin(req)){
         return res.json({status:'err', mess:'no permission'}); 

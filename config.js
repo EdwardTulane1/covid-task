@@ -9,6 +9,6 @@ module.exports =  {
         password : 'texpkur333',
         database : 'covid',
         port:'5432',
-    }
-    
+    },
+    ITEMS_IN_PAGE:50,
 }

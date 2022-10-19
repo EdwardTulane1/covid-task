@@ -12,14 +12,15 @@ const database = require('./database.js');
 const queries = require('./queries.js');
 function updateUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        // if(!data.userID){
-        //     return res.json({status:'err', mess:'no user ID'})
-        // }
-        // else{
-        //     if(await userExists())[
-        //         await createUser(data)
-        //     ]
-        // }
+        if (!data.userID) {
+            return res.json({ status: 'err', mess: 'no user ID' });
+        }
+        else {
+            if (yield userExists(data.id))
+                [
+                    yield createUser(data.id, data)
+                ];
+        }
     });
 }
 function userExists(id) {
@@ -29,8 +30,9 @@ function userExists(id) {
         return false;
     });
 }
-function createUser(data) {
+function createUser(userID, data) {
     return __awaiter(this, void 0, void 0, function* () {
+        yield database.runQuery(queries.setProfile(userID, data));
     });
 }
 function getProfile(id) {

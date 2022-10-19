@@ -41,10 +41,10 @@
         function renderProductList(element, index, arr) {
             var li = document.createElement('li');
             li.setAttribute('class','profile');
+            let prfilesList=document.getElementById('profiles')
+            prfilesList.appendChild(li);
 
-            ul.appendChild(li);
-
-            li.innerHTML=li.innerHTML + element;
+            li.innerHTML=JSON.stringify(element);
         }
     </script>
 </body>

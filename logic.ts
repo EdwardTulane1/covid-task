@@ -3,14 +3,14 @@ const database=require('./database.js')
 const queries=require('./queries.js')
 
 async function updateUserProfile(data, res){
-    // if(!data.userID){
-    //     return res.json({status:'err', mess:'no user ID'})
-    // }
-    // else{
-    //     if(await userExists())[
-    //         await createUser(data)
-    //     ]
-    // }
+    if(!data.userID){
+        return res.json({status:'err', mess:'no user ID'})
+    }
+    else{
+        if(await userExists(data.id))[
+            await createUser(data.id, data)
+        ]
+    }
 }
 
 async function userExists(id):Promise<boolean>{
@@ -18,7 +18,8 @@ async function userExists(id):Promise<boolean>{
     return false;
 
 }
-async function createUser(data):Promise<void>{
+async function createUser(userID, data):Promise<void>{
+    await database.runQuery(queries.setProfile(userID, data))
 
 }
 
@@ -32,6 +33,10 @@ async function  getProfile(id):Promise<Profile|null> {
 
 async function getProfiles(){
     const profiles=await database.runQuery(queries.getProfiles())
+    return profiles.rows
+}
+async function getProfilesPagination(pageNum){
+    const profiles=await database.runQuery(queries.getProfilesPage(pageNum))
     return profiles.rows
 }
 

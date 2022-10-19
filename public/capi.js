@@ -46,6 +46,14 @@ async function getProfiles(){
     return await userAction('getProfiles')
 }
 
+async function getProfilesPagination(pageNum){
+    return await userAction('getProfiles', '2')
+}
+
+async function getProfile(userID){
+
+}
+
 export{
     getProfiles,
 }
