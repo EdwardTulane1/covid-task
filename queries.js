@@ -20,23 +20,29 @@ const create_vaccins_table= `create table IF NOT EXISTS vaccins(
     factory VARCHAR(60) NOT NULL
 );`
 
+const create_postitive_negative_tables=`create table IF NOT EXISTS covid_test_result(
+    id VARCHAR(60) NOT NULL,
+    test_date DATE NOT NULL,
+    result VARCHAR(10) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative')
+);`
+
 const get_profiles=`SELECT * FROM patients`
 
 const getPatientVax=(id)=>{
-    return `SELECT * FROM vaccins WHERE id='${id}'`
+    return `SELECT * FROM vaccins WHERE id = '${id}'`
 }
 const getProfile=(id)=>{
     return `SELECT * FROM patients WHERE id = '${id}'`
 }
 
 const getProfiles=()=>{
-    return `SELECT * FROM patients`
+    return `SELECT id, first_name, last_name, img FROM patients`
 }
 
 const all_queries={
-    get_profile: `SELECT * FROM patients WHERE id={id}`,
+    get_profile: `SELECT * FROM patients WHERE id = '{id}'`,
     get_profiles: `SELECT * FROM patients`,
-    get_vaccins: `SELECT * FROM vaccins WHERE id={id}`
+    get_vaccins: `SELECT * FROM vaccins WHERE id = '{id}'`
     
 }
 
@@ -55,6 +61,7 @@ async function  getProfilesPage(pageNum){
 module.exports={
     create_patients_table,
     create_vaccins_table,
+    create_postitive_negative_tables,
     get_profiles,
     getPatientVax,
     getProfiles,

@@ -21,6 +21,10 @@ pool.query(queries.create_vaccins_table, (err, res)=>{
     console.log('query 2', res, err)
 
 })
+pool.query(queries.create_postitive_negative_tables, (err, res)=>{
+    console.log('query 3', res, err)
+
+})
 
 async function runQuery(sql){
     console.log(sql)
