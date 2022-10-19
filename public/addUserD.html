@@ -88,7 +88,8 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'tel', 'telephone']
+    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'tel', 'telephone']
+    const other_attributes = []
 
 
     const image_input = document.querySelector("#image-input");
@@ -125,6 +126,9 @@
         let UserData = {}
         attributes.forEach(et => {
             UserData[et] = $$(et).value
+            if(!UserData[et]){
+                //return
+            }
         })
         console.log('userDate:  ', UserData)
         capi.setUser($$('id'), UserData)

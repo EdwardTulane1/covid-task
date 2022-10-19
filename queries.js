@@ -1,6 +1,5 @@
 
 const conf=require('./config')
-
 const create_patients_table=`create table IF NOT EXISTS patients(
     id VARCHAR(60) primary key UNIQUE,
     first_name VARCHAR(50) NOT NULL,
@@ -26,6 +25,9 @@ const create_postitive_negative_tables=`create table IF NOT EXISTS covid_test_re
     result VARCHAR(15) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative'))
 );`
 
+const initial_scripts=[create_patients_table, create_postitive_negative_tables, create_vaccins_table]
+
+
 const get_profiles=`SELECT * FROM patients`
 
 const getPatientVax=(id)=>{
@@ -42,7 +44,8 @@ const getProfiles=()=>{
 const all_queries={
     get_profile: `SELECT * FROM patients WHERE id = '{id}'`,
     get_profiles: `SELECT * FROM patients`,
-    get_vaccins: `SELECT * FROM vaccins WHERE id = '{id}'`
+    get_vaccins: `SELECT * FROM vaccins WHERE id = '{id}'`,
+    set_user: `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date) VALUES ('{id}', '{first_name}', '{last_name}', '{phone}', '{telephone}', '{city}', '{street}', '{apartement_num}', '{birth_date}')`
     
 }
 
@@ -62,6 +65,7 @@ module.exports={
     create_patients_table,
     create_vaccins_table,
     create_postitive_negative_tables,
+    initial_scripts,
     get_profiles,
     getPatientVax,
     getProfiles,

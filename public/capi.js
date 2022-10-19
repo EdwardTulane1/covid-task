@@ -59,5 +59,6 @@ async function getProfile(userID){
 
 export{
     getProfiles,
-    getProfile
+    getProfile,
+    setUser
 }
