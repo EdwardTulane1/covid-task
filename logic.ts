@@ -3,7 +3,7 @@ const database=require('./database.js')
 const queries=require('./queries.js')
 
 async function updateUserProfile(data, res){
-    if(!data.userID){
+    if(!data.id){
         return res.json({status:'err', mess:'no user ID'})
     }
     else{
@@ -42,16 +42,19 @@ async function getProfilesPagination(pageNum){
 }
 
 async function setUserProfile(data, res){
+    console.log('logic set profile')
     if(await userExists(data.id)){
+        console.log('exists')
         await updateUserProfile(data.id, data)
     }
     else{
+        console.log('doesnt exist')
         await createProfile(data.id, data)
     }
 }
 
 async function createProfile(userID, data){
-    
+
 
 }
 

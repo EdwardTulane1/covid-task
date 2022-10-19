@@ -12,7 +12,7 @@ const database = require('./database.js');
 const queries = require('./queries.js');
 function updateUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!data.userID) {
+        if (!data.id) {
             return res.json({ status: 'err', mess: 'no user ID' });
         }
         else {
@@ -59,10 +59,13 @@ function getProfilesPagination(pageNum) {
 }
 function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('logic set profile');
         if (yield userExists(data.id)) {
+            console.log('exists');
             yield updateUserProfile(data.id, data);
         }
         else {
+            console.log('doesnt exist');
             yield createProfile(data.id, data);
         }
     });

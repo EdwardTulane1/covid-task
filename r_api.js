@@ -59,6 +59,7 @@ router.post('/setUser', async(req, res)=>{
     console.log('set user')
     console.log(req.body)
     if(!authUser.IsItAdmin(req)){
+        console.log('no admin')
         return res.json({status:'err', mess:'no permission'}); 
     }
     else{
