@@ -71,12 +71,24 @@ function getProfile(id) {
 function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.runQuery(queries.getProfiles());
+        profiles.rows.array.forEach(e => {
+            e.img = Buffer.from(e.img, 'hex').toString('utf8');
+        });
+        profiles.rows.array.forEach(row => {
+            row.img = Buffer.from(row.img, 'hex').toString('utf8');
+        });
         return profiles.rows;
     });
 }
 function getProfilesPagination(pageNum) {
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.runQuery(queries.getProfilesPage(pageNum));
+        profiles.rows.forEach(row => {
+            try {
+                row.img = Buffer.from(row.img, 'hex').toString('utf8');
+            }
+            catch (e) { }
+        });
         return profiles.rows;
     });
 }

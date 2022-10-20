@@ -117,6 +117,7 @@
         async function nextPage(num){
 
             const data= await capi.getProfilesPagination(pageNum+=num)
+            console.log(data)
             document.getElementById('users-list').innerHTML=``
             data.profiles.forEach(renderProductList)
 

@@ -65,10 +65,22 @@ async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:v
 
 async function getProfiles(){
     const profiles=await database.runQuery(queries.getProfiles())
+    profiles.rows.array.forEach(e => {
+        e.img=Buffer.from(e.img, 'hex').toString('utf8') 
+    });
+    profiles.rows.array.forEach(row => {
+        row.img=Buffer.from(row.img, 'hex').toString('utf8') 
+    });
     return profiles.rows
 }
 async function getProfilesPagination(pageNum){
     const profiles=await database.runQuery(queries.getProfilesPage(pageNum))
+    profiles.rows.forEach(row => {
+        try{
+            row.img=Buffer.from(row.img, 'hex').toString('utf8') 
+
+        }catch(e){}
+    });
     return profiles.rows
 }
 
