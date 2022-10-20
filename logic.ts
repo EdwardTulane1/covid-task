@@ -25,13 +25,22 @@ async function createUser(userID, data, res):Promise<void>{
 
 }
 
-async function  getProfile(id):Promise<Profile|null> {
+async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:vaccin[]}|null> {
     let profile=await database.runQuery(queries.getProfile(id))
     console.log('profile, ', profile)
-    if(profile.rows.length>0){
-        return profile.rows[0]
+    let vaccins=await database.runQuery(queries.getPatientVax(id))
+    let tests=await database.runQuery(queries.getPatientTests(id)) 
+    if(profile?.rows?.length>0){
+        profile = profile.rows[0]
+        return {
+            profile,
+            tests, 
+            vaccins
+        }
     }
     return null;
+
+
 }
 
 async function getProfiles(){
@@ -54,15 +63,20 @@ async function setUserProfile(data, res){
 }
 
 async function createProfile(userID, data, res){
-    console.log(queries.setProfile(data))
-    let success = await database.runQuery(queries.setProfile( data))
-    if(!success){
-        res.json({status:'err'})
-    }
-    else{
-        res.json({status:'OK'})
-    }
 
+    console.log(queries.setProfile(data))
+    let prof_call= await database.runQuery(queries.setProfile(data.profile))
+    let vax_call=data.vaccins.forEach(async(vax) => {
+        await database.runQuery(queries.setVax(vax));
+    });
+    let test_call=data.tests.forEach(async(test) => {
+        await database.runQuery(queries.setTest(test));
+    });
+    if([prof_call, ...test_call, ...vax_call].find(a=>!a)){
+        res.json({status:'err'})
+
+    }
+    res.json({status:'OK'})
 
 }
 

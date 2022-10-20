@@ -36,11 +36,19 @@ function createUser(userID, data, res) {
     });
 }
 function getProfile(id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         let profile = yield database.runQuery(queries.getProfile(id));
         console.log('profile, ', profile);
-        if (profile.rows.length > 0) {
-            return profile.rows[0];
+        let vaccins = yield database.runQuery(queries.getPatientVax(id));
+        let tests = yield database.runQuery(queries.getPatientTests(id));
+        if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+            profile = profile.rows[0];
+            return {
+                profile,
+                tests,
+                vaccins
+            };
         }
         return null;
     });
@@ -71,13 +79,17 @@ function setUserProfile(data, res) {
 function createProfile(userID, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(queries.setProfile(data));
-        let success = yield database.runQuery(queries.setProfile(data));
-        if (!success) {
+        let prof_call = yield database.runQuery(queries.setProfile(data.profile));
+        let vax_call = data.vaccins.forEach((vax) => __awaiter(this, void 0, void 0, function* () {
+            yield database.runQuery(queries.setVax(vax));
+        }));
+        let test_call = data.tests.forEach((test) => __awaiter(this, void 0, void 0, function* () {
+            yield database.runQuery(queries.setTest(test));
+        }));
+        if ([prof_call, ...test_call, ...vax_call].find(a => !a)) {
             res.json({ status: 'err' });
         }
-        else {
-            res.json({ status: 'OK' });
-        }
+        res.json({ status: 'OK' });
     });
 }
 function deleteProfile(userID) {

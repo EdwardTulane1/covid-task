@@ -25,6 +25,9 @@ const create_postitive_negative_tables=`create table IF NOT EXISTS covid_test_re
     result VARCHAR(15) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative'))
 );`
 
+
+
+
 const initial_scripts=[create_patients_table, create_postitive_negative_tables, create_vaccins_table]
 
 
@@ -41,6 +44,10 @@ const getProfiles=()=>{
     return `SELECT id, first_name, last_name, img FROM patients`
 }
 
+const getPatientTests = (id)=>{
+    return `SELECT * FROM covid_test_result WHERE id = '${id}'`
+}
+
 const updateProfile=(id, data)=>{
     let query=`UPDATE patients SET`
     patients_args.forEach(arg=>{
@@ -51,6 +58,14 @@ const updateProfile=(id, data)=>{
     query+=` WHERE id = '${id}'`
 }
 
+
+function setTest(test){
+    return `INSERT INTO vaccins (id, test_date, result) VALUES ('${test.id}', '${test.test_date}', '${test.result}',)`
+}
+
+function setVax(vax){
+    return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${test.factory}',)`
+}
 
 
 function setQuery(query,data,info={}){ //data={userid:12,tableid:55,sum:17.....}
@@ -93,6 +108,9 @@ module.exports={
     getProfile,
     setProfile,
     getPositive,
-    deleteProfile
+    deleteProfile,
+    getPatientTests,
+    setTest,
+    setVax
 
 }
