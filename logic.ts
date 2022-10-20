@@ -7,28 +7,29 @@ async function updateUserProfile(userId,data, res){
 
     let prof_call= await database.runQuery(queries.updateProfile(data.profile.id, data.profile))
 
-    let vax_call=[]
-    if(!(data.vaccins.find(vax=>!bjutils.checkVaxValidity))){
-        await database.runQuery(queries.deleteProfileVax(data.profile.id));
-        vax_call=data.vaccins.map(async(vax) => {
-            bjutils.checkVaxValidity(vax)
-            await database.runQuery(queries.setVax(vax));
+    let myPromises:Promise<any>[] = []
+    if(!(data.vaccins.find(vax=>!bjutils.checkVaxValidity()))){
+        myPromises.push(database.runQuery(queries.deleteProfileVax(data.profile.id)));
+        data.vaccins.map(async(vax) => {
+            myPromises.push( database.runQuery(queries.setVax(vax)));
         });
     }
     
-    let test_call=data.tests.map(async(test) => {
-        await database.runQuery(queries.setTest(test));
-    });
-    
-
-    const promises=[prof_call, ...test_call, ...vax_call]
-    await Promise.all(promises)
-    if(promises.find(a=>!a)){
-        res.json({status:'err'})
+    if(!(data.tests.find(vax=>!bjutils.checkTestValidity()))){
+        myPromises.push( database.runQuery(queries.deleteProfileTest(data.profile.id)));
+        data.tests.map(async(vax) => {
+            myPromises.push( database.runQuery(queries.setTest(vax)));
+        });
+    }
+   
+    await Promise.all(myPromises)
+    if(myPromises.find(a=>!a)){
+        res.json({status:'err', mess:'something went wrong'})
 
     }
     res.json({status:'OK'})
 }
+
 
 async function userExists(id):Promise<boolean>{
     if(await getProfile(id))return true;

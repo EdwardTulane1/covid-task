@@ -14,21 +14,22 @@ const bjutils = require('./bjutils.js');
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let prof_call = yield database.runQuery(queries.updateProfile(data.profile.id, data.profile));
-        let vax_call = [];
-        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity))) {
-            yield database.runQuery(queries.deleteProfileVax(data.profile.id));
-            vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
-                bjutils.checkVaxValidity(vax);
-                yield database.runQuery(queries.setVax(vax));
+        let myPromises = [];
+        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity()))) {
+            myPromises.push(database.runQuery(queries.deleteProfileVax(data.profile.id)));
+            data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
+                myPromises.push(database.runQuery(queries.setVax(vax)));
             }));
         }
-        let test_call = data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
-            yield database.runQuery(queries.setTest(test));
-        }));
-        const promises = [prof_call, ...test_call, ...vax_call];
-        yield Promise.all(promises);
-        if (promises.find(a => !a)) {
-            res.json({ status: 'err' });
+        if (!(data.tests.find(vax => !bjutils.checkTestValidity()))) {
+            myPromises.push(database.runQuery(queries.deleteProfileTest(data.profile.id)));
+            data.tests.map((vax) => __awaiter(this, void 0, void 0, function* () {
+                myPromises.push(database.runQuery(queries.setTest(vax)));
+            }));
+        }
+        yield Promise.all(myPromises);
+        if (myPromises.find(a => !a)) {
+            res.json({ status: 'err', mess: 'something went wrong' });
         }
         res.json({ status: 'OK' });
     });
