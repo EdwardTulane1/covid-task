@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const database = require('./database.js');
 const queries = require('./queries.js');
-function updateUserProfile(data, res) {
+function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!data.id) {
             return res.json({ status: 'err', mess: 'no user ID' });
@@ -62,7 +62,7 @@ function setUserProfile(data, res) {
         console.log('logic set profile');
         if (yield userExists(data.id)) {
             console.log('exists');
-            yield updateUserProfile(data.id, data);
+            yield updateUserProfile(data.id, data, res);
         }
         else {
             console.log('doesnt exist');

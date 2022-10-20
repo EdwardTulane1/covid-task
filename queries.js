@@ -41,6 +41,16 @@ const getProfiles=()=>{
     return `SELECT id, first_name, last_name, img FROM patients`
 }
 
+const updateProfile=(id, data)=>{
+    let query=`UPDATE patients SET`
+    patients_args.forEach(arg=>{
+        if(data[arg]){
+           query+= `${arg} = '${data[arg]}'`
+        }
+    })
+    query+=` WHERE id = '${id}'`
+}
+
 
 
 function setQuery(query,data,info={}){ //data={userid:12,tableid:55,sum:17.....}
@@ -61,9 +71,15 @@ function setProfile(data){
     return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${Number(data.apartemnt_num)}', '${data.date_of_birth}')`
 }
 
-async function  getProfilesPage(pageNum){
+function  getProfilesPage(pageNum){
     return `SELECT * FROM patients LIMIT ${conf.ITEMS_IN_PAGE} OFFSET ${pageNum*conf.ITEMS_IN_PAGE}`
 }
+
+function deleteProfile(id){
+    return `delete * from patients where id = '${id}'`
+}
+
+
 
 module.exports={
     create_patients_table,

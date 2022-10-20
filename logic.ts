@@ -2,7 +2,7 @@
 const database=require('./database.js')
 const queries=require('./queries.js')
 
-async function updateUserProfile(data, res){
+async function updateUserProfile(userId,data, res){
     if(!data.id){
         return res.json({status:'err', mess:'no user ID'})
     }
@@ -45,7 +45,7 @@ async function setUserProfile(data, res){
     console.log('logic set profile')
     if(await userExists(data.id)){
         console.log('exists')
-        await updateUserProfile(data.id, data)
+        await updateUserProfile(data.id, data, res)
     }
     else{
         console.log('doesnt exist')
