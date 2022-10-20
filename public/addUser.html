@@ -65,6 +65,19 @@
 <script type="module">
     import * as capi from './capi.js';
     const attributes=['id','first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'phone', 'telephone']
+    var EDIT=false;
+    init();
+    function init(){
+        let profile=localStorage.getItem('nz_profile')
+        if(profile){
+            EDIT=true;
+        }
+        if(EDIT){
+            attributes.forEach(att=>[
+                
+            ])
+        }
+    }
 
     
     const image_input = document.querySelector("#image-input");

@@ -34,10 +34,10 @@
         let data=await capi.getProfiles()
         console.log('zzzz', data)
         if(data.status=="OK"){
-            data.profiles.forEach(renderProductList)
+            data.profiles.forEach(renderProfileList)
         }
         
-        function renderProductList(element, index, arr) {
+        function renderProfileList(element, index, arr) {
             var li = document.createElement('li');
             li.setAttribute('class','profile');
             let prfilesList=document.getElementById('profiles')

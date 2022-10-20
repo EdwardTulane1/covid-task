@@ -11,4 +11,26 @@ module.exports =  {
         port:'5432',
     },
     ITEMS_IN_PAGE:50,
+    profile:['id',
+        'first_name',
+        'last_name',
+        'city',
+        'street',
+        'apartement_num',
+        'birth_date',
+        'phone',
+        'telephone',
+        'img'
+    ],
+
+    covid_data:{
+        'vax':{
+            'vaccin1':['vaccination_date', 'factory', 'id'],
+            'vaccin2':['vaccination_date', 'factory', 'id'],
+            'vaccin3':['vaccination_date', 'factory', 'id'],
+        },
+        'test_check':{
+            
+        }
+    }
 }

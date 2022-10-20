@@ -103,6 +103,22 @@
     const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
 
 
+    var EDIT=false;
+    init();
+    function init(){
+        let profile=localStorage.getItem('nz_profile')
+        if(profile){
+            EDIT=true;
+        }
+        if(EDIT){
+            [...must_attributes, ...covid_attributes].forEach(att=>[
+                $$(att).value=profile[att]
+            ])
+        }
+    }
+
+
+
     const image_input = document.querySelector("#image-input");
     image_input.addEventListener("change", function () {
         const reader = new FileReader();
@@ -144,22 +160,22 @@
             if (!UserData[et]) {
                 return
             }
+            covid_attributes.forEach(et => {
+                UserData[et] = $$(et).value
+                console.log(et, UserData[et])
+            })
+
+
         })
         console.log('userDate:  ', UserData)
         capi.setUser($$('id'), { data: UserData })
     }
 
-    async function saveCovid(){
-        let UserData = {}
-        covid_attributes.forEach(et => {
-            UserData[et] = $$(et).value
-            console.log(et, UserData[et])
-        })
-        console.log('userDate:  ', UserData)
-        capi.setCovid($$('id'), { data: UserData })
-        
+    async function saveCovid() {
+        updateUser()
+
     }
-    async function delCovid(){
+    async function delCovid() {
         capi.delCovid($$('id'))
     }
 

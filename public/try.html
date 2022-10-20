@@ -20,7 +20,7 @@
         <div class="padding">
             <button style="top: 1px;
             right: 2px;
-            position:absolute;"> Create New</button>
+            position:absolute;" act="create_profile"> Create New</button>
             <div class="row">
                 <div class="col-sm-6">
 
@@ -149,13 +149,19 @@
                 return;
             }
             let p = (
-                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) : 0
+                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) : 
+                ect =='create_profile' ? createProfile() :0
             );
 
 
             // p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
 
         })
+        function createProfile(){
+            localStorage.removeItem('nz_profile')
+            window.location.href = "http://18.223.164.248/addUserD.html";
+
+        }
         function $$(str) { return document.getElementById(str) }
 
     </script>

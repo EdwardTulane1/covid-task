@@ -19,4 +19,12 @@ function watchRequireFile(path,file){
     });    
 }
 
+function checkProfileValidity(profile){
+
+}
+
+function checkCovidDataValidity(covidData){
+
+}
+
 module.exports.watchRequireFile=watchRequireFile;

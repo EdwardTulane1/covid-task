@@ -13,7 +13,8 @@ type Profile={
         vaccins:vaccination[]
     }
     positive_date:string,
-    negative_date:string
+    negative_date:string,
+    img:string,
 }
 type vaccination={
     Date:string,
