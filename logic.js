@@ -14,23 +14,23 @@ const bjutils = require('./bjutils.js');
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let prof_call = yield database.runQuery(queries.updateProfile(data.profile.id, data.profile));
-        let myPromises = [];
-        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity()))) {
-            myPromises.push(database.runQuery(queries.deleteProfileVax(data.profile.id)));
+        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
+            yield database.runQuery(queries.deleteProfileVax(data.profile.id));
             data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
-                myPromises.push(database.runQuery(queries.setVax(vax)));
+                yield database.runQuery(queries.setVax(vax));
             }));
         }
-        if (!(data.tests.find(vax => !bjutils.checkTestValidity()))) {
-            myPromises.push(database.runQuery(queries.deleteProfileTest(data.profile.id)));
-            data.tests.map((vax) => __awaiter(this, void 0, void 0, function* () {
-                myPromises.push(database.runQuery(queries.setTest(vax)));
+        if (!(data.tests.find(test => !bjutils.checkTestValidity(test)))) {
+            yield database.runQuery(queries.deleteProfileTests(data.profile.id));
+            data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
+                yield database.runQuery(queries.setTest(test));
             }));
         }
-        yield Promise.all(myPromises);
-        if (myPromises.find(a => !a)) {
-            res.json({ status: 'err', mess: 'something went wrong' });
-        }
+        // await Promise.all(myPromises)
+        // if(myPromises.find(a=>!a)){
+        //     console.log('eeeeeeeeeeeeeerrrrrrrrrrrrrrrrrorrrrrrrrr')
+        //     res.json({status:'err', mess:'something went wrong'})
+        // }
         res.json({ status: 'OK' });
     });
 }
