@@ -34,12 +34,35 @@ router.get('/getProfile/:userID', async(req, res)=>{
     console.log('in here')
     const profiles=await logic.getProfile(req.params.userID)
     if(profiles){
-        return res.json({status:"OK", profiles:profiles})
+        return res.json({status:"OK", profile:profiles})
     }
     else{
         return res.json({status:'err'})
     }
 })
+
+
+router.post('/setProfile', async(req, res)=>{
+    console.log('set user')
+    console.log(req.body)
+    if(!authUser.IsItAdmin(req)){
+        console.log('no admin')
+        return res.json({status:'err', mess:'no permission'}); 
+    }
+    else{
+        checkProfileValidity(req.body)
+        await logic.setUserProfile(req.body, res)
+    }
+})
+
+
+router.get('/deleteProfile/:userID', async(req, res)=>{
+    console.log('in here')
+    const profiles=await logic.deleteProfile(req.params.userID)
+    
+})
+
+
 
 
 
@@ -55,18 +78,6 @@ router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
     }
 })
 
-router.post('/setUser', async(req, res)=>{
-    console.log('set user')
-    console.log(req.body)
-    if(!authUser.IsItAdmin(req)){
-        console.log('no admin')
-        return res.json({status:'err', mess:'no permission'}); 
-    }
-    else{
-        checkProfileValidity(req.body)
-        await logic.setUserProfile(req.body, res)
-    }
-})
 
 
 

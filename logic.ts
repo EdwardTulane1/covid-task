@@ -44,11 +44,9 @@ async function getProfilesPagination(pageNum){
 async function setUserProfile(data, res){
     console.log('logic set profile')
     if(await userExists(data.id)){
-        console.log('exists')
         await updateUserProfile(data.id, data, res)
     }
     else{
-        console.log('doesnt exist')
         await createProfile(data.id, data)
     }
 }
@@ -58,6 +56,11 @@ async function createProfile(userID, data){
     await database.runQuery(queries.setProfile( data))
 
 
+}
+
+
+async function deleteProfile(userID){
+    await database.runQuery(queries.deleteProfile(userID))
 }
 
 async function positiveStats(){

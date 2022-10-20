@@ -92,6 +92,7 @@ module.exports={
     getProfilesPage,
     getProfile,
     setProfile,
-    getPositive
+    getPositive,
+    deleteProfile
 
 }

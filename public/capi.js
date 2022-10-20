@@ -49,7 +49,7 @@ function userActionPost(command, data) {
 
 async function setUser(userID, data) {
     data.userID = userID
-    return await userActionPost('setUser', data);
+    return await userActionPost('setProfile', data);
 }
 
 async function deleteUser(userID) {
@@ -66,9 +66,14 @@ async function getProfilesPagination(pageNum) {
 
 async function getProfile(userID) {
     console.log('looking for profile', userID)
-    let profile =  await userActionGET('getProfile', userID)
-    localStorage.setItem('nz_profile', JSON.stringify(profile))
-    indow.location.href = "http://18.223.164.248/addUserD.html";
+    let ans = await userActionGET('getProfile', userID)
+    if (ans.status === 'OK') {
+        let profile = ans.profile
+        console.log('profile arrived', JSON.stringify(profile))
+        localStorage.setItem('nz_profile', JSON.stringify(profile))
+        location.href = "http://18.223.164.248/addUserD.html";
+    }
+
 }
 
 

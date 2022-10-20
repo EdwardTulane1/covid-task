@@ -128,7 +128,7 @@
                         for me to think about business content?</div>
                 </div>
                 <div class="no-wrap">
-                    <div class="item-date text-muted text-sm d-none d-md-block"><button act='edit'>edit</button><button act='delete' style="margin-left:3%">delete</button></div>
+                    <div class="item-date text-muted text-sm d-none d-md-block"><button userId=${element.id} act='edit'>edit</button><button userId=${element.id} act='delete' style="margin-left:3%">delete</button></div>
                 </div>`
             let prfilesList = document.getElementById('users-list')
 
@@ -150,7 +150,8 @@
             }
             let p = (
                 ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) : 
-                ect =='create_profile' ? createProfile() :0
+                ect =='create_profile' ? createProfile() :
+                ect == 'edit' ? editProfile(e.target.getAttribute('userId')):0
             );
 
 
@@ -161,6 +162,10 @@
             localStorage.removeItem('nz_profile')
             window.location.href = "http://18.223.164.248/addUserD.html";
 
+        }
+
+        function editProfile(userID){
+            capi.getProfile(userID)
         }
         function $$(str) { return document.getElementById(str) }
 

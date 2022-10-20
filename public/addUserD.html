@@ -103,11 +103,33 @@
     const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
 
 
+
+    
+// let Profile={
+//     'id',
+//     'first_name',
+//     'last_name',
+//     'city',
+//     'street',
+//     'apartement_num':number,
+//     'birth_date':string,
+//     'phone':string,
+//     'telephone':string,
+//     'covid_data':{
+//         vaccins:vaccination[]
+//     }
+//     'positive_date':string,
+//     'negative_date':string,
+//     'img':string,
+// }
+
     var EDIT=false;
     init();
     function init(){
         let profile=localStorage.getItem('nz_profile')
         if(profile){
+            console.log('init', profile)
+            profile=JSON.parse(profile)
             EDIT=true;
         }
         if(EDIT){

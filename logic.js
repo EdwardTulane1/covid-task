@@ -61,11 +61,9 @@ function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('logic set profile');
         if (yield userExists(data.id)) {
-            console.log('exists');
             yield updateUserProfile(data.id, data, res);
         }
         else {
-            console.log('doesnt exist');
             yield createProfile(data.id, data);
         }
     });
@@ -74,6 +72,11 @@ function createProfile(userID, data) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(queries.setProfile(data));
         yield database.runQuery(queries.setProfile(data));
+    });
+}
+function deleteProfile(userID) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield database.runQuery(queries.deleteProfile(userID));
     });
 }
 function positiveStats() {
