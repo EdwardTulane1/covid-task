@@ -54,7 +54,7 @@ async function setUserProfile(data, res){
 }
 
 async function createProfile(userID, data, res){
-    console.log(queries.setProfile( data))
+    console.log(queries.setProfile(data))
     let success = await database.runQuery(queries.setProfile( data))
     if(!success){
         res.json({status:'err'})

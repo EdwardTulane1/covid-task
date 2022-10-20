@@ -50,7 +50,7 @@ router.post('/setProfile', async(req, res)=>{
         return res.json({status:'err', mess:'no permission'}); 
     }
     else{
-        checkProfileValidity(req.body)
+        // checkProfileValidity(req.body)
         await logic.setUserProfile(req.body, res)
     }
 })

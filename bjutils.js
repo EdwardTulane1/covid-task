@@ -24,3 +24,4 @@ function checkProfileValidity(profile){
 }
 
 module.exports.watchRequireFile=watchRequireFile;
+module.exports.checkProfileValidity=checkProfileValidity;

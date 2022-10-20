@@ -47,7 +47,7 @@
                     <div class="col-md-12"><label class="labels">Street</label><input type="text" class="form-control"
                             value="" id="street"></div>
                     <div class="col-md-12"><label class="labels">Apartment Num</label><input type="text"
-                            class="form-control" value="" id="apartemnt_num"></div>
+                            class="form-control" value="" id="apartement_num"></div>
                     <div class="col-md-12"><label class="labels">Birth Date</label><input type="date"
                             class="form-control" value="" id="date_of_birth"></div>
                 </div>
@@ -100,9 +100,9 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'phone', 'telephone']
+    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartement_num', 'date_of_birth', 'phone', 'telephone']
     // const other_attributes = ['img']
-    const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
+    // const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
 
 
 
@@ -150,7 +150,7 @@
             const uploaded_image = reader.result;
             console.log('uploaded img', uploaded_image)
             console.log('zzz', base64ToHex(uploaded_image))
-            $$('profile-img').src=`${uploaded_image}`
+            $$('profile-img').src = `${uploaded_image}`
             // document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
         });
         reader.readAsDataURL(this.files[0]);
@@ -185,15 +185,18 @@
             if (!UserData[et]) {
                 return
             }
-            covid_attributes.forEach(et => {
-                UserData[et] = $$(et).value
-                console.log(et, UserData[et])
-            })
-
-
         })
+
+        // covid_attributes.forEach(et => {
+        //     UserData[et] = $$(et).value
+        //     console.log(et, UserData[et])
+        // })
+         
+        UserData.img=base64ToHex($$('profile-img').src)
+
+
         console.log('userDate:  ', UserData)
-        capi.setProfile($$('id').value, { data: UserData })
+        capi.setProfile($$('id').value, UserData)
     }
 
     async function saveCovid() {
