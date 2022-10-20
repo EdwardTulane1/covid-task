@@ -62,10 +62,13 @@ const updateProfile=(id, data)=>{
 
 
 function setTest(test){
+    console.log('setting test')
     return `INSERT INTO covid_test_result (id, test_date, result) VALUES ('${test.id}', '${test.test_date}', '${test.result}')`
 }
 
 function setVax(vax){
+    console.log('setting vax')
+
     return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${vax.factory}')`
 }
 

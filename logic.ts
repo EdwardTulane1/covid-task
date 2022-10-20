@@ -13,12 +13,14 @@ async function updateUserProfile(userId,data, res){
             await database.runQuery(queries.setVax(vax));
         });
     }
-    
     if(!(data.tests.find(test=>!bjutils.checkTestValidity(test)))){
         await database.runQuery(queries.deleteProfileTests(data.profile.id));
         data.tests.map(async(test) => {
             await  database.runQuery(queries.setTest(test));
         });
+    }
+    else{
+        console.log('not valid')
     }
    
     // await Promise.all(myPromises)
@@ -45,9 +47,9 @@ async function createUser(userID, data, res):Promise<void>{
 }
 
 async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:vaccin[]}|null> {
-    let profile=await database.runQuery(queries.getProfile(id))
-    let vaccins=(await database.runQuery(queries.getPatientVax(id))).rows
-    let tests=(await database.runQuery(queries.getPatientTests(id))).rows
+    let profile= await database.runQuery(queries.getProfile(id))
+    let vaccins= (await database.runQuery(queries.getPatientVax(id))).rows
+    let tests= (await database.runQuery(queries.getPatientTests(id))).rows
     if(profile?.rows?.length>0){
         profile = profile.rows[0]
         profile.img= Buffer.from(profile.img, 'hex').toString('utf8') 
@@ -64,10 +66,7 @@ async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:v
 
 async function getProfiles(){
     const profiles=await database.runQuery(queries.getProfiles())
-    profiles.rows.array.forEach(e => {
-        e.img=Buffer.from(e.img, 'hex').toString('utf8') 
-    });
-    profiles.rows.array.forEach(row => {
+    profiles.rows.forEach(row => {
         row.img=Buffer.from(row.img, 'hex').toString('utf8') 
     });
     return profiles.rows
@@ -142,6 +141,7 @@ async function positiveStats(){
     })
 
 }
+
 
 
 

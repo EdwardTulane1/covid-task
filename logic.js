@@ -26,6 +26,9 @@ function updateUserProfile(userId, data, res) {
                 yield database.runQuery(queries.setTest(test));
             }));
         }
+        else {
+            console.log('not valid');
+        }
         // await Promise.all(myPromises)
         // if(myPromises.find(a=>!a)){
         //     console.log('eeeeeeeeeeeeeerrrrrrrrrrrrrrrrrorrrrrrrrr')
@@ -70,10 +73,7 @@ function getProfile(id) {
 function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.runQuery(queries.getProfiles());
-        profiles.rows.array.forEach(e => {
-            e.img = Buffer.from(e.img, 'hex').toString('utf8');
-        });
-        profiles.rows.array.forEach(row => {
+        profiles.rows.forEach(row => {
             row.img = Buffer.from(row.img, 'hex').toString('utf8');
         });
         return profiles.rows;

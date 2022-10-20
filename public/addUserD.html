@@ -213,6 +213,7 @@
             let testData={}
             for(let key in test){
                 if(key!=='result'){
+                    console.log(key, $$(test[key])?.value )
                     testData[key]=$$(test[key])?.value
                 }
                 else{
