@@ -46,7 +46,6 @@ async function createUser(userID, data, res):Promise<void>{
 
 async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:vaccin[]}|null> {
     let profile=await database.runQuery(queries.getProfile(id))
-    console.log('profile, ', profile)
     let vaccins=(await database.runQuery(queries.getPatientVax(id))).rows
     let tests=(await database.runQuery(queries.getPatientTests(id))).rows
     if(profile?.rows?.length>0){
@@ -85,7 +84,7 @@ async function getProfilesPagination(pageNum){
 }
 
 async function setUserProfile(data, res){
-
+    console.log('profile check', bjutils.checkProfileValidity(data))
     if(!bjutils.checkProfileValidity(data)) return;
 
     if(await userExists(data.profile.id)){
@@ -122,7 +121,12 @@ async function createProfile(userID, data, res){
 
 
 async function deleteProfile(userID){
-    await database.runQuery(queries.deleteProfile(userID))
+    let promises:Promise<any>[]=[];
+    promises.push(database.runQuery(queries.deleteProfile(userID)))
+    promises.push( database.runQuery(queries.deleteProfileVax(userID)))
+    promises.push(database.runQuery(queries.deleteProfileTests(userID)))
+    await Promise.all(promises)
+
 }
 
 async function positiveStats(){

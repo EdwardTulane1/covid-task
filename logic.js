@@ -53,7 +53,6 @@ function getProfile(id) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         let profile = yield database.runQuery(queries.getProfile(id));
-        console.log('profile, ', profile);
         let vaccins = (yield database.runQuery(queries.getPatientVax(id))).rows;
         let tests = (yield database.runQuery(queries.getPatientTests(id))).rows;
         if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
@@ -94,6 +93,7 @@ function getProfilesPagination(pageNum) {
 }
 function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('profile check', bjutils.checkProfileValidity(data));
         if (!bjutils.checkProfileValidity(data))
             return;
         if (yield userExists(data.profile.id)) {
@@ -127,7 +127,11 @@ function createProfile(userID, data, res) {
 }
 function deleteProfile(userID) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield database.runQuery(queries.deleteProfile(userID));
+        let promises = [];
+        promises.push(database.runQuery(queries.deleteProfile(userID)));
+        promises.push(database.runQuery(queries.deleteProfileVax(userID)));
+        promises.push(database.runQuery(queries.deleteProfileTests(userID)));
+        yield Promise.all(promises);
     });
 }
 function positiveStats() {

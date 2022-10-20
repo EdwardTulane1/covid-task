@@ -23,14 +23,12 @@ const pool = new Pool({
 
 queries.initial_scripts.forEach(script=>{
     pool.query(script, (err, res)=>{
-        console.log('query 1', res, err)
     })
 })
 
 
 
 async function runQuery(sql){
-    console.log(sql)
     try{
         const res=await pool.query(sql)
         return res

@@ -1,6 +1,6 @@
 module.exports =  {
 
-    BASE_URL:'18.223.164.248',
+    BASE_URL:'3.134.103.40',
     // managers:['opps.zbeda@gmail.com'],
     pg: {
         connectionLimit : 10,

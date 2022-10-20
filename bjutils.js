@@ -20,6 +20,7 @@ function watchRequireFile(path, file) {
 }
 
 function checkProfileValidity(data) {
+  let profile_checks=[]; vaccins_check=[]; test_check =[]
   if (!data.profile) return false;
   profile_checks = conf.profile_must.map(z=>{
     !!data.profile[z]

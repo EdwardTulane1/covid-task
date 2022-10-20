@@ -61,7 +61,7 @@ async function getProfilesPagination(pageNum) {
 
 async function watchProfile(userID) {
     localStorage.setItem('nz_profile',userID)
-    location.href = "http://18.223.164.248/addUserD.html";
+    location.href = "http://3.134.103.40//addUserD.html";
 
 }
 
