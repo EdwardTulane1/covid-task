@@ -119,12 +119,11 @@
         'birth_date':'birth_date',
         'phone':'phone',
         'telephone':'telephone',
-        'img': 'img'
         
     }
-    let vaccins=[{id:'id', vaccination_date:'vax_1_date', factory:'factory_vax_1'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}]
+    let vaccinsStruct=[{id:'id', vaccination_date:'vax_1_date', factory:'factory_vax_1'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}]
 
-    let tests=[{id:'id', test_date:positive_date, result:'positive'}, {id:'id', test_date:negative_date, result:'negative'}]
+    let testsStruct=[{id:'id', test_date:'positive_date', result:'positive'}, {id:'id', test_date:'negative_date', result:'negative'}]
 
     var EDIT = false;
     init();
@@ -180,24 +179,38 @@
 
 
     async function updateUser() {
-        let UserData = {}
-        Object.keys(profileStruct).forEach(key=>UserData.profile[key]=$$(profileStruct[key]).value)
-        Object.keys(profileStruct).forEach(key=>UserData.profile[key]=$$(profileStruct[key]).value)
-
-        must_attributes.forEach(et => {
-            UserData[et] = $$(et).value
-            console.log(et, UserData[et])
-            if (!UserData[et]) {
-                return
+        let UserData = {
+            profile:{},
+            vaccins:[],
+            tests:[]
+        }
+        Object.keys(profileStruct).forEach(key=>UserData.profile[key]=$$(profileStruct[key])?.value)
+        UserData.vaccins=vaccinsStruct.map(vax=>{
+            let vaccinData={}
+            for(let key in vax){
+                vaccinData[key]=$$(vaccinsStruct[key])?.value
             }
+            return vaccinData
         })
-
+        UserData.tests=testsStruct.map(test=>{
+            let testData={}
+            for(let key in test){
+                if(key!=='result'){
+                    testData[key]=$$(testsStruct[key])?.value
+                }
+                else{
+                    testData[key]=testsStruct[key];
+                }
+            }
+            return testData
+        })
+        
         // covid_attributes.forEach(et => {
         //     UserData[et] = $$(et).value
         //     console.log(et, UserData[et])
         // })
         console.log($$('profile-img').src)
-        UserData.img=base64ToHex($$('profile-img').src)
+        UserData.profile.img=base64ToHex($$('profile-img').src)
 
 
         console.log('userDate:  ', UserData)

@@ -64,7 +64,7 @@ function setTest(test){
 }
 
 function setVax(vax){
-    return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${test.factory}',)`
+    return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${vax.factory}',)`
 }
 
 
