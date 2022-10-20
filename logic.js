@@ -13,12 +13,24 @@ const queries = require('./queries.js');
 const bjutils = require('./bjutils.js');
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!data.id) {
-            return res.json({ status: 'err', mess: 'no user ID' });
+        let prof_call = yield database.runQuery(queries.updateProfile(data.profile.id, data.profile));
+        let vax_call = [];
+        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity))) {
+            yield database.runQuery(queries.deleteProfileVax(data.profile.id));
+            vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
+                bjutils.checkVaxValidity(vax);
+                yield database.runQuery(queries.setVax(vax));
+            }));
         }
-        else {
-            return yield createUser(data.id, data, res);
+        let test_call = data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
+            yield database.runQuery(queries.setTest(test));
+        }));
+        const promises = [prof_call, ...test_call, ...vax_call];
+        yield Promise.all(promises);
+        if (promises.find(a => !a)) {
+            res.json({ status: 'err' });
         }
+        res.json({ status: 'OK' });
     });
 }
 function userExists(id) {

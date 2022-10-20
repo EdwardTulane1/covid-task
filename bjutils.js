@@ -21,18 +21,18 @@ function watchRequireFile(path, file) {
 
 function checkProfileValidity(data) {
   if (!data.profile) return false;
-  profile_checks = conf.profile.map(z=>{
+  profile_checks = conf.profile_must.map(z=>{
     !!data.profile[z]
   })
   if (data.vaccins) {
     vaccins_check = data.vaccins.map(vax => {
-      return (vax.id && vax.vaccination_date && vax.factory)
+      return checkVaxValidity(vax)
 
     })
   }
   if (data.tests) {
     tests_check = data.tests.map(test => {
-      return (test.id && test.test_date && ['positive', 'negative'].includes(test.result))
+      return checkTestValidity(test);
     })
   }
   return !([...profile_checks, vaccins_check, ...tests_check].find(x=>!x))
@@ -40,5 +40,15 @@ function checkProfileValidity(data) {
 
 }
 
+
+function checkVaxValidity(vax){
+  return (vax.id && vax.vaccination_date && vax.factory)
+}
+function checkTestValidity(test){
+  return (test.id && test.test_date && ['positive', 'negative'].includes(test.result))
+}
+
 module.exports.watchRequireFile = watchRequireFile;
 module.exports.checkProfileValidity = checkProfileValidity;
+module.exports.checkVaxValidity = checkVaxValidity;
+module.exports.checkTestValidity = checkTestValidity;

@@ -121,7 +121,7 @@
         'telephone':'telephone',
         
     }
-    let vaccinsStruct=[{id:'id', vaccination_date:'vax_1_date', factory:'factory_vax_1'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}]
+    let vaccinsStruct=[{id:'id', vaccination_date:'vax_1_date', factory:'factory_vax_1'}, {id:'id', vaccination_date:'vax_2_date', factory:'factory_vax_2'}, {id:'id', vaccination_date:'vax_3_date', factory:'factory_vax_3'}]
 
     let testsStruct=[{id:'id', test_date:'positive_date', result:'positive'}, {id:'id', test_date:'negative_date', result:'negative'}]
 
@@ -152,13 +152,13 @@
                 }
             })
 
-            
+
 
             
             
-            console.log(HexToBase64(profile.img.data))
-            let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
-            $$('profile-img').src = `${uploaded_image}`
+            // console.log(HexToBase64(profile.img.data))
+            // let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
+            // $$('profile-img').src = `${uploaded_image}`
 
         }
     }

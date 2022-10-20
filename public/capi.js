@@ -42,6 +42,7 @@ function userActionPost(command, data) {
 
 async function setProfile(userID, data) {
     data.userID = userID
+    console.log('set', userID)
     return await userActionPost('setProfile', data);
 }
 

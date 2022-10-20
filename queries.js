@@ -49,13 +49,15 @@ const getPatientTests = (id)=>{
 }
 
 const updateProfile=(id, data)=>{
-    let query=`UPDATE patients SET`
-    patients_args.forEach(arg=>{
+    let query=`UPDATE patients SET `
+    conf.profile.forEach(arg=>{
         if(data[arg]){
-           query+= `${arg} = '${data[arg]}'`
+           query+= `${arg} = '${data[arg]}' ,`
         }
     })
+    query = query.slice(0, -1)
     query+=` WHERE id = '${id}'`
+    return query
 }
 
 
@@ -94,6 +96,13 @@ function deleteProfile(id){
     return `DELETE FROM PATIENTS WHERE id = '${id}'`
 }
 
+function deleteProfileVax(id){
+    return `DELETE FROM vaccins WHERE id = '${id}'`
+}
+function deleteProfileTests(id){
+    return `DELETE FROM covid_test_result WHERE id = '${id}'`
+}
+
 
 
 module.exports={
@@ -111,6 +120,9 @@ module.exports={
     deleteProfile,
     getPatientTests,
     setTest,
-    setVax
+    setVax,
+    updateProfile,
+    deleteProfileVax,
+    deleteProfileTests
 
 }

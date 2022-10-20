@@ -11,7 +11,7 @@ module.exports =  {
         port:'5432',
     },
     ITEMS_IN_PAGE:50,
-    profile:['id',
+    profile_must:['id',
         'first_name',
         'last_name',
         'city',
@@ -21,6 +21,17 @@ module.exports =  {
         'phone',
         'telephone',
     ],
+    profile:['id',
+    'first_name',
+    'last_name',
+    'city',
+    'street',
+    'apartement_num',
+    'birth_date',
+    'phone',
+    'telephone',
+    'img'
+],
 
     covid_data:{
         'vax':{

@@ -4,13 +4,30 @@ const queries=require('./queries.js')
 const bjutils=require('./bjutils.js')
 
 async function updateUserProfile(userId,data, res){
-    if(!data.id){
-        return res.json({status:'err', mess:'no user ID'})
+
+    let prof_call= await database.runQuery(queries.updateProfile(data.profile.id, data.profile))
+
+    let vax_call=[]
+    if(!(data.vaccins.find(vax=>!bjutils.checkVaxValidity))){
+        await database.runQuery(queries.deleteProfileVax(data.profile.id));
+        vax_call=data.vaccins.map(async(vax) => {
+            bjutils.checkVaxValidity(vax)
+            await database.runQuery(queries.setVax(vax));
+        });
     }
-    else{
-        return await createUser(data.id, data, res)
-        
+    
+    let test_call=data.tests.map(async(test) => {
+        await database.runQuery(queries.setTest(test));
+    });
+    
+
+    const promises=[prof_call, ...test_call, ...vax_call]
+    await Promise.all(promises)
+    if(promises.find(a=>!a)){
+        res.json({status:'err'})
+
     }
+    res.json({status:'OK'})
 }
 
 async function userExists(id):Promise<boolean>{
