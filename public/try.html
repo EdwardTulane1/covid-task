@@ -18,11 +18,15 @@
 
     <div class="page-content page-container" id="page-content">
         <div class="padding">
+            <button style="top: 1px;
+            right: 2px;
+            position:absolute;"> Create New</button>
             <div class="row">
                 <div class="col-sm-6">
 
+
                     <div class="list list-row block" id="users-list">
-                        <div class="list-item" data-id="19">
+                        <!-- <div class="list-item" data-id="19">
                             <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning">S</span></a></div>
                             <div class="flex">
                                 <a href="#" class="item-author text-color" data-abc="true">Sam Kuran</a>
@@ -80,7 +84,7 @@
                             <div class="no-wrap">
                                 <div class="item-date text-muted text-sm d-none d-md-block">2 hours ago</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -114,9 +118,9 @@
 
         function renderProductList(element, index, arr) {
 
-            let newUser=`
+            let newUser = `
                 <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning"><img
-                    src="https://img.icons8.com/color/48/000000/guest-male.png" alt=".">
+                    src=${element.img ? element.img : "https://img.icons8.com/color/48/000000/guest-male.png"} alt=".">
                     </span></a></div>
                 <div class="flex">
                     <a href="#" class="item-author text-color" data-abc="true">${element.first_name}  ${element.last_name}</a>
@@ -124,14 +128,14 @@
                         for me to think about business content?</div>
                 </div>
                 <div class="no-wrap">
-                    <div class="item-date text-muted text-sm d-none d-md-block">13/12 18</div>
+                    <div class="item-date text-muted text-sm d-none d-md-block"><button act='edit'>edit</button><button act='delete' style="margin-left:3%">delete</button></div>
                 </div>`
             let prfilesList = document.getElementById('users-list')
 
             var user = document.createElement('div');
-            user.className='list-item'
+            user.className = 'list-item'
             user.setAttribute('data-id', element.id)
-            user.innerHTML=newUser
+            user.innerHTML = newUser
             // li.setAttribute('class', 'profile');
             // let prfilesList = document.getElementById('profiles')
             prfilesList.appendChild(user);
