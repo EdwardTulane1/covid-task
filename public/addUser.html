@@ -1,32 +1,41 @@
 <html>
-    <header>
-        <!-- <script src="/socket.io/socket.io.js"></script>        -->
-     
-        <style>
-               #signout,#signin {
-                display: none;
-                position: absolute;
-                right:0px;
-                font-size: 16px !important;
-            }
-            body[curUser] #signout{
-                display: inline-block;                
-            }
-            body:not([curUser]) #signin{
-                display: inline-block;               
-            }
-            #display-image{
-                width: 400px;
-                height: 225px;
-                border: 1px solid black;
-                background-position: center;
-                background-size: cover;
-            }
-        </style>
-    </header>
-    <body>
+<header>
+    <!-- <script src="/socket.io/socket.io.js"></script>        -->
 
-<!--            
+    <style>
+        #signout,
+        #signin {
+            display: none;
+            position: absolute;
+            right: 0px;
+            font-size: 16px !important;
+        }
+
+        body[curUser] #signout {
+            display: inline-block;
+        }
+
+        body:not([curUser]) #signin {
+            display: inline-block;
+        }
+
+        #display-image {
+            width: 400px;
+            height: 225px;
+            border: 1px solid black;
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+</header>
+<head>
+    <script src="https://bundle.run/buffer@6.0.3"></script>
+
+</head>
+
+<body>
+
+    <!--            
             <span  id="signout"> <i class="">            
                 </i><span class="xicon-text" id="signInName"> </span> 
                 <a href="/googleAuth/logout/playerClient.html">sign out</a> 
@@ -41,22 +50,22 @@
         <div>id <input type="text"></div>
         <div>first Name <input type="text" id="first_name" value=''></div>
         <div>last Name <input type="text" id="last_name" value=''></div>
-        <div>City<input type="text" id="city" ></div>
-        <div>Street<input type="text" id="street" ></div>
+        <div>City<input type="text" id="city"></div>
+        <div>Street<input type="text" id="street"></div>
         <div>Apartment Number <input type="number" id="apartemnt_num"></div>
         <div>birth date <input type="date" id="date_of_birth"></div>
         <div>phone <input type="tel" id='phone'></div>
         <div>home phone <input type="tel" id='telephone'> </div>
-        <div>photo  <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
-        <div id="display-image"></div>  
+        <div>photo <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
+        <div id="display-image"></div>
 
-    </div>   
-    <div><button act="update"> update </button></div>    
-    <div><button act="create"> create </button></div>    
-    <div><button act="delete"> delete </button></div>     
+    </div>
+    <div><button act="update"> update </button></div>
+    <div><button act="create"> create </button></div>
+    <div><button act="delete"> delete </button></div>
 
-    
-    </body>
+
+</body>
 
 
 
@@ -64,24 +73,24 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const attributes=['id','first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'phone', 'telephone']
-    var EDIT=false;
+    const attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartemnt_num', 'date_of_birth', 'phone', 'telephone']
+    var EDIT = false;
     init();
-    function init(){
-        let profile=localStorage.getItem('nz_profile')
-        if(profile){
-            EDIT=true;
+    function init() {
+        let profile = localStorage.getItem('nz_profile')
+        if (profile) {
+            EDIT = true;
         }
-        if(EDIT){
-            attributes.forEach(att=>[
+        if (EDIT) {
+            attributes.forEach(att => [
 
             ])
         }
     }
 
-    
+
     const image_input = document.querySelector("#image-input");
-    image_input.addEventListener("change", function() {
+    image_input.addEventListener("change", function () {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
             const uploaded_image = reader.result;
@@ -94,31 +103,31 @@
 
 
 
-    addEventListener('click',e=>{
+    addEventListener('click', e => {
         let ect;
-        if (!e.target || !e.target.getAttribute || !(ect=e.target.getAttribute('act'))){//?????last part?
+        if (!e.target || !e.target.getAttribute || !(ect = e.target.getAttribute('act'))) {//?????last part?
             return;
         }
-        let p=(
+        let p = (
             ect == 'update' ? updateUser() :
-            ect == 'create' ? updateUser() :
-            ect == 'delete' ? deleteProfile()  : 0
+                ect == 'create' ? updateUser() :
+                    ect == 'delete' ? deleteProfile() : 0
         );
-        
-        p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
+
+        p.then((res) => { $$("res").innerHTML = JSON.stringify(res, undefined, 2) })
     })
 
 
 
-    async function updateUser(){
-        let UserData={}
-        attributes.forEach(et=>{
-            data[et]=getElementById(et).value
+    async function updateUser() {
+        let UserData = {}
+        attributes.forEach(et => {
+            data[et] = getElementById(et).value
         })
         capi.setProfile(userID, UserData)
     }
 
-    async function deleteProfile(userID){
+    async function deleteProfile(userID) {
         capi.deleteProfile(userID)
     }
 
@@ -129,12 +138,27 @@
             const hex = raw.charCodeAt(i).toString(16);
             result += (hex.length === 2 ? hex : '0' + hex);
         }
-    return result.toUpperCase();
-}
+        let res= HexToBase64(result.toUpperCase())
+        dataURLtoFile(res)
+        // return result.toUpperCase();
+    }
 
 
 
-    function $$(str){return document.getElementById(str)}
+    function dataURLtoFile(dataurl, filename) {
+        var image = new Image();
+        image.src = `data:image/png;base64,${dataurl}`;
+        document.body.appendChild(image);
+
+    }
+
+    function HexToBase64(str) {
+        return buffer.Buffer.from(str, 'hex').toString('base64')
+
+    }
+
+    function $$(str) { return document.getElementById(str) }
 
 </script>
-</html> 
+
+</html>

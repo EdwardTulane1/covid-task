@@ -217,14 +217,24 @@
         return result.toUpperCase();
     }
 
-    function HexToBase64(str){
-        return  buffer.Buffer.from(str, 'hex').toString('base64')
+    function HexToBase64(str) {
+        return buffer.Buffer.from(str, 'hex').toString('base64')
 
     }
 
-    console.log(HexToBase64('dny4749235'))
 
-  
+    function dataURLtoFile(dataurl, filename) {
+        var image = new Image();
+        image.src = `data:image/png;base64,${dataurl}`;
+        document.body.appendChild(image);
+
+    }
+
+    //Usage example:
+
+
+
+
 
 
 
