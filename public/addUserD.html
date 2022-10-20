@@ -49,7 +49,7 @@
                     <div class="col-md-12"><label class="labels">Apartment Num</label><input type="text"
                             class="form-control" value="" id="apartement_num"></div>
                     <div class="col-md-12"><label class="labels">Birth Date</label><input type="date"
-                            class="form-control" value="" id="date_of_birth"></div>
+                            class="form-control" value="" id="birth_date"></div>
                 </div>
                 <!-- <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
@@ -102,7 +102,7 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartement_num', 'date_of_birth', 'phone', 'telephone']
+    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartement_num', 'birth_date', 'phone', 'telephone']
     const covid_attributes=[]
     // const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
 
@@ -133,7 +133,7 @@
         if (profile_id) {
             EDIT = true;
             profile= await capi.getProfile(profile_id)
-            console.log('all prof:  ', prof)
+            console.log('all prof:  ', profile)
         }
         if (EDIT) {
             [...must_attributes, ...covid_attributes].forEach(att => [
@@ -210,7 +210,7 @@
         //     console.log(et, UserData[et])
         // })
         console.log($$('profile-img').src)
-        UserData.profile.img=base64ToHex($$('profile-img').src)
+        // UserData.profile.img=base64ToHex($$('profile-img').src)
 
 
         console.log('userDate:  ', UserData)

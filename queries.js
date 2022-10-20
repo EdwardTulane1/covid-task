@@ -60,11 +60,11 @@ const updateProfile=(id, data)=>{
 
 
 function setTest(test){
-    return `INSERT INTO vaccins (id, test_date, result) VALUES ('${test.id}', '${test.test_date}', '${test.result}',)`
+    return `INSERT INTO covid_test_result (id, test_date, result) VALUES ('${test.id}', '${test.test_date}', '${test.result}')`
 }
 
 function setVax(vax){
-    return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${vax.factory}',)`
+    return `INSERT INTO vaccins (id, vaccination_date, factory) VALUES ('${vax.id}', '${vax.vaccination_date}', '${vax.factory}')`
 }
 
 
@@ -82,8 +82,8 @@ function getPositive(start_date, end_date){
 
 
 function setProfile(data){
-    console.log('data to inset ', data , Number(data.apartemnt_num), data.date_of_birth)
-    return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date, img) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${data.apartement_num}', '${data.date_of_birth}', '${data.img}')`
+    console.log('data to inset ', data , Number(data.apartemnt_num), data.birth_date)
+    return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date, img) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${data.apartement_num}', '${data.birth_date}', '${data.img}')`
 }
 
 function  getProfilesPage(pageNum){
