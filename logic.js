@@ -130,5 +130,6 @@ module.exports = {
     setUserProfile,
     getProfiles,
     getProfile,
-    deleteProfile
+    deleteProfile,
+    getProfilesPagination
 };

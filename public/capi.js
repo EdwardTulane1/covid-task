@@ -56,7 +56,7 @@ async function getProfiles() {
 }
 
 async function getProfilesPagination(pageNum) {
-    return await userActionGET('getProfiles', pageNum)
+    return await userActionGET('getProfilesPagination', pageNum)
 }
 
 async function watchProfile(userID) {
@@ -83,5 +83,6 @@ export {
     getProfile,
     setProfile,
     deleteProfile,
-    watchProfile
+    watchProfile,
+    getProfilesPagination
 }

@@ -31,6 +31,7 @@
                 </div>
 
             </div>
+            <button act="next-page">next</button><button act="prev-page">prev</button>
         </div>
     </div>
 
@@ -42,6 +43,7 @@
         const baseurl = '18.223.164.248'
         const loginUrl = `http://${baseurl}/auth/userLogin`
         const logoutUrl = `http://${baseurl}/auth/userOut`
+        let pageNum=1;
 
         function setHref(selector, url, inout) {
             [...document.querySelectorAll(`${selector}`)].forEach((e) => { e.href = `https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}` })
@@ -50,7 +52,7 @@
         setHref('[login-url]', loginUrl, `authTo/`);
         setHref('[logout-url]', logoutUrl, `logout/`);
 
-        let data = await capi.getProfiles()
+        let data = await capi.getProfilesPagination(pageNum)
         console.log('zzzz', data)
         if (data.status == "OK") {
             data.profiles.forEach(renderProductList)
@@ -90,7 +92,11 @@
             console.log(ect)
             let p = (
                 ect == 'create_profile' ? createProfile() :
-                ect == 'watch' ? watchProfile(e.target.getAttribute('userId')):0
+                ect == 'watch' ? watchProfile(e.target.getAttribute('userId')):
+                ect == 'next-page' ? nextPage(1):
+                ect == 'prev-page' ? nextPage(-1): 0
+ 
+
             );
 
 
@@ -107,6 +113,15 @@
             capi.watchProfile(userID)
         }
         function $$(str) { return document.getElementById(str) }
+
+        async function nextPage(num){
+
+            const data= await capi.getProfilesPagination(pageNum+=num)
+            document.getElementById('users-list').innerHTML=``
+            data.profiles.forEach(renderProductList)
+
+
+        }
 
     </script>
 </body>

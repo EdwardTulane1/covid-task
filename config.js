@@ -10,7 +10,7 @@ module.exports =  {
         database : 'covid',
         port:'5432',
     },
-    ITEMS_IN_PAGE:50,
+    ITEMS_IN_PAGE:3,
     profile_must:['id',
         'first_name',
         'last_name',

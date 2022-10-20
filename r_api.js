@@ -17,18 +17,6 @@ router.use(express.json());
 
 
 
-router.get('/getProfiles', async(req, res)=>{
-    console.log('in here')
-    const profiles=await logic.getProfiles(req.body, res)
-    if(profiles){
-        return res.json({status:"OK", profiles:profiles})
-    }
-    else{
-        return res.json({status:'err'})
-    }
-})
-
-
 
 router.get('/getProfile/:userID', async(req, res)=>{
     console.log('in here')
@@ -77,6 +65,20 @@ router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
         return res.json({status:'err'})
     }
 })
+
+
+
+router.get('/getProfiles', async(req, res)=>{
+    console.log('in here')
+    const profiles=await logic.getProfiles()
+    if(profiles){
+        return res.json({status:"OK", profiles:profiles})
+    }
+    else{
+        return res.json({status:'err'})
+    }
+})
+
 
 
 
