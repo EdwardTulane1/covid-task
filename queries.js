@@ -68,7 +68,7 @@ function getPositive(start_date, end_date){
 
 function setProfile(data){
     console.log('data to inset ', data , Number(data.apartemnt_num), data.date_of_birth)
-    return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${data.apartement_num}', '${data.date_of_birth}')`
+    return `INSERT INTO patients (id, first_name, last_name, phone, telephone, city, street, apartement_num, birth_date, img) VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.phone}', '${data.telephone}', '${data.city}', '${data.street}', '${data.apartement_num}', '${data.date_of_birth}', '${data.img}')`
 }
 
 function  getProfilesPage(pageNum){

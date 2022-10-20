@@ -65,12 +65,14 @@
         </div>
         <div class="col-md-4">
             <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience"><span>Covid Data</span><span
+                <div class="d-flex justify-content-between align-items-center experience"><span>Covid Data</span>
+                    <!-- <span
                         class=" px-3 p-1 add-experience"><button class="btn btn-primary profile-button" type="button"
                             act="save-covid" style="margin-right:3px">Save
                             Cvoid Date</button><button class="btn btn-primary profile-button" type="button"
                             act="del-covid">del
-                            Cvoid Date</button></span></div>
+                            Cvoid Date</button></span> -->
+                        </div>
                 <br>
                 <div class="col-md-12"><label class="labels">Positive Date</label><input type="date"
                         class="form-control" placeholder="experience" value="" id="positive_date"></div> <br>
@@ -101,7 +103,7 @@
 <script type="module">
     import * as capi from './capi.js';
     const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartement_num', 'date_of_birth', 'phone', 'telephone']
-    // const other_attributes = ['img']
+    const covid_attributes=[]
     // const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
 
 
@@ -127,17 +129,21 @@
 
     var EDIT = false;
     init();
-    function init() {
-        let profile = localStorage.getItem('nz_profile')
-        if (profile) {
-            console.log('init', profile)
-            profile = JSON.parse(profile)
+    async function init() {
+        let profile
+        let profile_id = localStorage.getItem('nz_profile')
+        if (profile_id) {
             EDIT = true;
+            profile= await capi.getProfile(profile_id)
         }
         if (EDIT) {
             [...must_attributes, ...covid_attributes].forEach(att => [
                 $$(att).value = profile[att]
             ])
+            console.log(HexToBase64(profile.img.data))
+            let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
+            $$('profile-img').src = `${uploaded_image}`
+
         }
     }
 
@@ -151,7 +157,6 @@
             console.log('uploaded img', uploaded_image)
             console.log('zzz', base64ToHex(uploaded_image))
             $$('profile-img').src = `${uploaded_image}`
-            // document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
         });
         reader.readAsDataURL(this.files[0]);
     });
@@ -191,7 +196,7 @@
         //     UserData[et] = $$(et).value
         //     console.log(et, UserData[et])
         // })
-         
+         console.log($$('profile-img').src)
         UserData.img=base64ToHex($$('profile-img').src)
 
 
@@ -245,6 +250,23 @@
 
     function $$(str) { return document.getElementById(str) }
 
+    let MytransferJson ={
+        phone:"phone_elenet_id",
+        name:"name_elenet_id",
+    }
+
+    function dataToFields(tans_Json,data){
+        for(let key in data){
+            try{
+                document.getElementById(tans_Json[key] = data[key])
+            }catch(e){console.log(e)}
+        }
+    }
+
+    async function GetpatiantData(){
+        let data = await(await fetch(`????`)).json()
+        dataToFields(MytransferJson,data)
+    }
 </script>
 
 

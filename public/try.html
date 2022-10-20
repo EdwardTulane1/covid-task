@@ -26,65 +26,7 @@
 
 
                     <div class="list list-row block" id="users-list">
-                        <!-- <div class="list-item" data-id="19">
-                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning">S</span></a></div>
-                            <div class="flex">
-                                <a href="#" class="item-author text-color" data-abc="true">Sam Kuran</a>
-                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
-                                    for me to think about business content?</div>
-                            </div>
-                            <div class="no-wrap">
-                                <div class="item-date text-muted text-sm d-none d-md-block">13/12 18</div>
-                            </div>
-                        </div>
-                        <div class="list-item" data-id="7">
-                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-primary"><img
-                                            src="https://img.icons8.com/color/48/000000/administrator-male.png"
-                                            alt="."></span></a></div>
-                            <div class="flex">
-                                <a href="#" class="item-author text-color" data-abc="true">Kinley Adolf</a>
-                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
-                                    for me to think about business content?</div>
-                            </div>
-                            <div class="no-wrap">
-                                <div class="item-date text-muted text-sm d-none d-md-block">21 July</div>
-                            </div>
-                        </div>
-                        <div class="list-item" data-id="17">
-                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning">H</span></a></div>
-                            <div class="flex">
-                                <a href="#" class="item-author text-color" data-abc="true">Velden Kamut</a>
-                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
-                                    for me to think about business content?</div>
-                            </div>
-                            <div class="no-wrap">
-                                <div class="item-date text-muted text-sm d-none d-md-block">13/3/19</div>
-                            </div>
-                        </div>
-                        <div class="list-item" data-id="16">
-                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-info">F</span></a></div>
-                            <div class="flex">
-                                <a href="#" class="item-author text-color" data-abc="true">Stuart Kim</a>
-                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
-                                    for me to think about business content?</div>
-                            </div>
-                            <div class="no-wrap">
-                                <div class="item-date text-muted text-sm d-none d-md-block">03/1/19</div>
-                            </div>
-                        </div>
-                        <div class="list-item" data-id="4">
-                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-success"><img
-                                            src="https://img.icons8.com/color/48/000000/guest-male.png"
-                                            alt="."></span></a></div>
-                            <div class="flex">
-                                <a href="#" class="item-author text-color" data-abc="true">Simply Fry</a>
-                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
-                                    for me to think about business content?</div>
-                            </div>
-                            <div class="no-wrap">
-                                <div class="item-date text-muted text-sm d-none d-md-block">2 hours ago</div>
-                            </div>
-                        </div> -->
+                       
                     </div>
                 </div>
 
@@ -98,8 +40,6 @@
     <script type="module">
         import * as capi from './capi.js'
         const baseurl = '18.223.164.248'
-        console.log('zzz')
-        console.log('base url:', baseurl)
         const loginUrl = `http://${baseurl}/auth/userLogin`
         const logoutUrl = `http://${baseurl}/auth/userOut`
 
@@ -128,7 +68,7 @@
                         for me to think about business content?</div>
                 </div>
                 <div class="no-wrap">
-                    <div class="item-date text-muted text-sm d-none d-md-block"><button userId=${element.id} act='edit'>edit</button><button userId=${element.id} act='delete' style="margin-left:3%">delete</button></div>
+                    <div class="item-date text-muted text-sm d-none d-md-block"><button act="watch" userId="${element.id}">watch</button></div>
                 </div>`
             let prfilesList = document.getElementById('users-list')
 
@@ -136,22 +76,21 @@
             user.className = 'list-item'
             user.setAttribute('data-id', element.id)
             user.innerHTML = newUser
-            // li.setAttribute('class', 'profile');
-            // let prfilesList = document.getElementById('profiles')
             prfilesList.appendChild(user);
-            // li.innerHTML = `<div class=profile  id=${element.id}>${element.first_name}<button act=getProfile profile_id=${element.id}>view</button></div>`
-            // JSON.stringify(element);
+
         }
 
         addEventListener('click', (e) => {
+            console.log('click')
+            console.log(e.target.getAttribute('userId'))
             let ect;
             if (!e.target || !e.target.getAttribute || !(ect = e.target.getAttribute('act'))) {//?????last part?
                 return;
             }
+            console.log(ect)
             let p = (
-                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) : 
-                ect =='create_profile' ? createProfile() :
-                ect == 'edit' ? editProfile(e.target.getAttribute('userId')):0
+                ect == 'create_profile' ? createProfile() :
+                ect == 'watch' ? watchProfile(e.target.getAttribute('userId')):0
             );
 
 
@@ -164,8 +103,8 @@
 
         }
 
-        function editProfile(userID){
-            capi.getProfile(userID)
+        function watchProfile(userID){
+            capi.watchProfile(userID)
         }
         function $$(str) { return document.getElementById(str) }
 
