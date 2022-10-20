@@ -20,7 +20,6 @@ module.exports =  {
         'birth_date',
         'phone',
         'telephone',
-        'img'
     ],
 
     covid_data:{

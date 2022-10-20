@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const database = require('./database.js');
 const queries = require('./queries.js');
+const bjutils = require('./bjutils.js');
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!data.id) {
@@ -67,8 +68,9 @@ function getProfilesPagination(pageNum) {
 }
 function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('logic set profile');
-        if (yield userExists(data.id)) {
+        if (!bjutils.checkProfileValidity(data))
+            return;
+        if (yield userExists(data.profile.id)) {
             return yield updateUserProfile(data.id, data, res);
         }
         else {
@@ -78,7 +80,6 @@ function setUserProfile(data, res) {
 }
 function createProfile(userID, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(queries.setProfile(data));
         let prof_call = yield database.runQuery(queries.setProfile(data.profile));
         let vax_call = data.vaccins.forEach((vax) => __awaiter(this, void 0, void 0, function* () {
             yield database.runQuery(queries.setVax(vax));

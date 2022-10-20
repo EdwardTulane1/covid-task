@@ -1,6 +1,7 @@
 
 const database=require('./database.js')
 const queries=require('./queries.js')
+const bjutils=require('./bjutils.js')
 
 async function updateUserProfile(userId,data, res){
     if(!data.id){
@@ -53,8 +54,10 @@ async function getProfilesPagination(pageNum){
 }
 
 async function setUserProfile(data, res){
-    console.log('logic set profile')
-    if(await userExists(data.id)){
+
+    if(!bjutils.checkProfileValidity(data)) return;
+
+    if(await userExists(data.profile.id)){
         return await updateUserProfile(data.id, data, res)
     }
     else{
@@ -64,7 +67,6 @@ async function setUserProfile(data, res){
 
 async function createProfile(userID, data, res){
 
-    console.log(queries.setProfile(data))
     let prof_call= await database.runQuery(queries.setProfile(data.profile))
     let vax_call=data.vaccins.forEach(async(vax) => {
         await database.runQuery(queries.setVax(vax));
