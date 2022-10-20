@@ -58,6 +58,7 @@ function getProfile(id) {
         let tests = (yield database.runQuery(queries.getPatientTests(id))).rows;
         if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             profile = profile.rows[0];
+            profile.img = Buffer.from(profile.img, 'hex').toString('utf8');
             return {
                 profile,
                 tests,
@@ -92,7 +93,11 @@ function setUserProfile(data, res) {
     });
 }
 function createProfile(userID, data, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        if ((_a = data === null || data === void 0 ? void 0 : data.profile) === null || _a === void 0 ? void 0 : _a.img) {
+            data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
+        }
         let prof_call = yield database.runQuery(queries.setProfile(data.profile));
         let vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
             yield database.runQuery(queries.setVax(vax));

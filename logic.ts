@@ -51,6 +51,7 @@ async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:v
     let tests=(await database.runQuery(queries.getPatientTests(id))).rows
     if(profile?.rows?.length>0){
         profile = profile.rows[0]
+        profile.img= Buffer.from(profile.img, 'hex').toString('utf8') 
         return {
             profile,
             tests, 
@@ -84,7 +85,10 @@ async function setUserProfile(data, res){
 }
 
 async function createProfile(userID, data, res){
+    if(data?.profile?.img){
+        data.profile.img = '\\x'+ Buffer.from(data.profile.img, 'utf8').toString('hex');
 
+    }
     let prof_call= await database.runQuery(queries.setProfile(data.profile))
     let vax_call=data.vaccins.map(async(vax) => {
         await database.runQuery(queries.setVax(vax));

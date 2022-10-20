@@ -102,11 +102,7 @@
 
 <script type="module">
     import * as capi from './capi.js';
-    const must_attributes = ['id', 'first_name', 'last_name', 'city', 'street', 'apartement_num', 'birth_date', 'phone', 'telephone']
-    const covid_attributes=[]
-    // const covid_attributes = ['vax_1_date', 'vax_2_date', 'vax_3_date', 'factory_vax_1', 'factory_vax_2', 'factory_vax_3', 'positive_date', 'negative_date']
-
-
+    
 
 
     let profileStruct={
@@ -158,7 +154,7 @@
             
             // console.log(HexToBase64(profile.img.data))
             // let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
-            // $$('profile-img').src = `${uploaded_image}`
+            $$('profile-img').src = `${profile.profile.img}`
 
         }
     }
@@ -226,8 +222,7 @@
         //     UserData[et] = $$(et).value
         //     console.log(et, UserData[et])
         // })
-        console.log($$('profile-img').src)
-        // UserData.profile.img=base64ToHex($$('profile-img').src)
+        UserData.profile.img=$$('profile-img').src
 
 
         console.log('userDate:  ', UserData)
