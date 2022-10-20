@@ -16,10 +16,7 @@ function updateUserProfile(userId, data, res) {
             return res.json({ status: 'err', mess: 'no user ID' });
         }
         else {
-            if (yield userExists(data.id))
-                [
-                    yield createUser(data.id, data)
-                ];
+            return yield createUser(data.id, data, res);
         }
     });
 }
@@ -30,9 +27,12 @@ function userExists(id) {
         return false;
     });
 }
-function createUser(userID, data) {
+function createUser(userID, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield database.runQuery(queries.setProfile(userID, data));
+        if (yield database.runQuery(queries.setProfile(userID, data))) {
+            return res.json({ status: "OK" });
+        }
+        return res.json({ status: "err" });
     });
 }
 function getProfile(id) {
@@ -61,17 +61,23 @@ function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('logic set profile');
         if (yield userExists(data.id)) {
-            yield updateUserProfile(data.id, data, res);
+            return yield updateUserProfile(data.id, data, res);
         }
         else {
-            yield createProfile(data.id, data);
+            return yield createProfile(data.id, data, res);
         }
     });
 }
-function createProfile(userID, data) {
+function createProfile(userID, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(queries.setProfile(data));
-        yield database.runQuery(queries.setProfile(data));
+        let success = yield database.runQuery(queries.setProfile(data));
+        if (!success) {
+            res.json({ status: 'err' });
+        }
+        else {
+            res.json({ status: 'OK' });
+        }
     });
 }
 function deleteProfile(userID) {
@@ -95,5 +101,6 @@ function positiveStats() {
 module.exports = {
     setUserProfile,
     getProfiles,
-    getProfile
+    getProfile,
+    deleteProfile
 };

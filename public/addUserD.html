@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="addUserD.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://bundle.run/buffer@6.0.3"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -15,6 +16,7 @@
 </head>
 
 <body>
+    <div id="res"></div>
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
@@ -104,37 +106,37 @@
 
 
 
-    
-// let Profile={
-//     'id',
-//     'first_name',
-//     'last_name',
-//     'city',
-//     'street',
-//     'apartement_num':number,
-//     'birth_date':string,
-//     'phone':string,
-//     'telephone':string,
-//     'covid_data':{
-//         vaccins:vaccination[]
-//     }
-//     'positive_date':string,
-//     'negative_date':string,
-//     'img':string,
-// }
 
-    var EDIT=false;
+    // let Profile={
+    //     'id',
+    //     'first_name',
+    //     'last_name',
+    //     'city',
+    //     'street',
+    //     'apartement_num':number,
+    //     'birth_date':string,
+    //     'phone':string,
+    //     'telephone':string,
+    //     'covid_data':{
+    //         vaccins:vaccination[]
+    //     }
+    //     'positive_date':string,
+    //     'negative_date':string,
+    //     'img':string,
+    // }
+
+    var EDIT = false;
     init();
-    function init(){
-        let profile=localStorage.getItem('nz_profile')
-        if(profile){
+    function init() {
+        let profile = localStorage.getItem('nz_profile')
+        if (profile) {
             console.log('init', profile)
-            profile=JSON.parse(profile)
-            EDIT=true;
+            profile = JSON.parse(profile)
+            EDIT = true;
         }
-        if(EDIT){
-            [...must_attributes, ...covid_attributes].forEach(att=>[
-                $$(att).value=profile[att]
+        if (EDIT) {
+            [...must_attributes, ...covid_attributes].forEach(att => [
+                $$(att).value = profile[att]
             ])
         }
     }
@@ -163,7 +165,7 @@
         let p = (
             ect == 'update' ? updateUser() :
                 ect == 'create' ? updateUser() :
-                    ect == 'delete' ? deleteUser() :
+                    ect == 'delete' ? deleteProfile($$('id').value) :
                         ect == 'save-covid' ? saveCovid() :
                             ect == 'del-covid' ? delCovid() : 0
 
@@ -190,7 +192,7 @@
 
         })
         console.log('userDate:  ', UserData)
-        capi.setUser($$('id'), { data: UserData })
+        capi.setProfile($$('id').value, { data: UserData })
     }
 
     async function saveCovid() {
@@ -198,11 +200,11 @@
 
     }
     async function delCovid() {
-        capi.delCovid($$('id'))
+        capi.delCovid($$('id').value)
     }
 
-    async function deleteUser(userID) {
-        capi.deleteUser(userID)
+    async function deleteProfile(userID) {
+        capi.deleteProfile(userID)
     }
 
     function base64ToHex(str) {
@@ -214,6 +216,16 @@
         }
         return result.toUpperCase();
     }
+
+    function HexToBase64(str){
+        return  buffer.Buffer.from(str, 'hex').toString('base64')
+
+    }
+
+    console.log(HexToBase64('dny4749235'))
+
+  
+
 
 
 

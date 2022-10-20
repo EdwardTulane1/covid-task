@@ -7,9 +7,8 @@ async function updateUserProfile(userId,data, res){
         return res.json({status:'err', mess:'no user ID'})
     }
     else{
-        if(await userExists(data.id))[
-            await createUser(data.id, data)
-        ]
+        return await createUser(data.id, data, res)
+        
     }
 }
 
@@ -18,8 +17,11 @@ async function userExists(id):Promise<boolean>{
     return false;
 
 }
-async function createUser(userID, data):Promise<void>{
-    await database.runQuery(queries.setProfile(userID, data))
+async function createUser(userID, data, res):Promise<void>{
+    if(await database.runQuery(queries.setProfile(userID, data))){
+        return res.json({status:"OK"})
+    }
+    return res.json({status:"err"})
 
 }
 
@@ -44,16 +46,22 @@ async function getProfilesPagination(pageNum){
 async function setUserProfile(data, res){
     console.log('logic set profile')
     if(await userExists(data.id)){
-        await updateUserProfile(data.id, data, res)
+        return await updateUserProfile(data.id, data, res)
     }
     else{
-        await createProfile(data.id, data)
+        return await createProfile(data.id, data, res)
     }
 }
 
-async function createProfile(userID, data){
+async function createProfile(userID, data, res){
     console.log(queries.setProfile( data))
-    await database.runQuery(queries.setProfile( data))
+    let success = await database.runQuery(queries.setProfile( data))
+    if(!success){
+        res.json({status:'err'})
+    }
+    else{
+        res.json({status:'OK'})
+    }
 
 
 }
@@ -77,8 +85,11 @@ async function positiveStats(){
 
 }
 
+
+
 module.exports={ 
     setUserProfile,
     getProfiles,
-    getProfile
+    getProfile,
+    deleteProfile
 }

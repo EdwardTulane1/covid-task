@@ -76,7 +76,7 @@ function  getProfilesPage(pageNum){
 }
 
 function deleteProfile(id){
-    return `delete * from patients where id = '${id}'`
+    return `DELETE FROM PATIENTS WHERE id = '${id}'`
 }
 
 

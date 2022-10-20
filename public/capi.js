@@ -1,5 +1,6 @@
 // const baseUrl='3.140.203.101'
 
+// import { Buffer } from 'buffer';
 
 
 function userActionGET(command, ...extra) {
@@ -47,13 +48,15 @@ function userActionPost(command, data) {
 }
 
 
-async function setUser(userID, data) {
+async function setProfile(userID, data) {
     data.userID = userID
+    console.log('saving', userID)
     return await userActionPost('setProfile', data);
 }
 
-async function deleteUser(userID) {
-    return await userActionGET('deleteUser', userID)
+async function deleteProfile(userID) {
+    console.log(userID, 'userID')
+    return await userActionGET('deleteProfile', userID)
 }
 
 async function getProfiles() {
@@ -66,12 +69,15 @@ async function getProfilesPagination(pageNum) {
 
 async function getProfile(userID) {
     console.log('looking for profile', userID)
-    let ans = await userActionGET('getProfile', userID)
-    if (ans.status === 'OK') {
-        let profile = ans.profile
+    let res = await userActionGET('getProfile', userID)
+    if (res.status === 'OK') {
+        let profile = res.profile
         console.log('profile arrived', JSON.stringify(profile))
         localStorage.setItem('nz_profile', JSON.stringify(profile))
         location.href = "http://18.223.164.248/addUserD.html";
+    }
+    else{
+        return res
     }
 
 }
@@ -80,5 +86,6 @@ async function getProfile(userID) {
 export {
     getProfiles,
     getProfile,
-    setUser
+    setProfile,
+    deleteProfile
 }

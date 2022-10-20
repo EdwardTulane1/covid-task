@@ -23,8 +23,4 @@ function checkProfileValidity(profile){
 
 }
 
-function checkCovidDataValidity(covidData){
-
-}
-
 module.exports.watchRequireFile=watchRequireFile;

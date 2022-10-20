@@ -74,7 +74,7 @@
         }
         if(EDIT){
             attributes.forEach(att=>[
-                
+
             ])
         }
     }
@@ -102,7 +102,7 @@
         let p=(
             ect == 'update' ? updateUser() :
             ect == 'create' ? updateUser() :
-            ect == 'delete' ? deleteUser()  : 0
+            ect == 'delete' ? deleteProfile()  : 0
         );
         
         p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
@@ -115,11 +115,11 @@
         attributes.forEach(et=>{
             data[et]=getElementById(et).value
         })
-        capi.setUser(userID, UserData)
+        capi.setProfile(userID, UserData)
     }
 
-    async function deleteUser(userID){
-        capi.deleteUser(userID)
+    async function deleteProfile(userID){
+        capi.deleteProfile(userID)
     }
 
     function base64ToHex(str) {
