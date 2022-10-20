@@ -81,13 +81,15 @@ function setUserProfile(data, res) {
 function createProfile(userID, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let prof_call = yield database.runQuery(queries.setProfile(data.profile));
-        let vax_call = data.vaccins.forEach((vax) => __awaiter(this, void 0, void 0, function* () {
+        let vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
             yield database.runQuery(queries.setVax(vax));
         }));
-        let test_call = data.tests.forEach((test) => __awaiter(this, void 0, void 0, function* () {
+        let test_call = data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
             yield database.runQuery(queries.setTest(test));
         }));
-        if ([prof_call, ...test_call, ...vax_call].find(a => !a)) {
+        const promises = [prof_call, ...test_call, ...vax_call];
+        yield Promise.all(promises);
+        if (promises.find(a => !a)) {
             res.json({ status: 'err' });
         }
         res.json({ status: 'OK' });

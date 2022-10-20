@@ -68,13 +68,17 @@ async function setUserProfile(data, res){
 async function createProfile(userID, data, res){
 
     let prof_call= await database.runQuery(queries.setProfile(data.profile))
-    let vax_call=data.vaccins.forEach(async(vax) => {
+    let vax_call=data.vaccins.map(async(vax) => {
         await database.runQuery(queries.setVax(vax));
     });
-    let test_call=data.tests.forEach(async(test) => {
+    let test_call=data.tests.map(async(test) => {
         await database.runQuery(queries.setTest(test));
     });
-    if([prof_call, ...test_call, ...vax_call].find(a=>!a)){
+    
+
+    const promises=[prof_call, ...test_call, ...vax_call]
+    await Promise.all(promises)
+    if(promises.find(a=>!a)){
         res.json({status:'err'})
 
     }
