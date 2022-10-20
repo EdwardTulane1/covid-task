@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
-                    width="150px"
+                    width="150px" id="profile-img"
                     src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
                 <div>photo <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></div>
                 <span class="font-weight-bold">ID<input type="text" class="form-control" value="" id="id"> </span>
@@ -150,7 +150,8 @@
             const uploaded_image = reader.result;
             console.log('uploaded img', uploaded_image)
             console.log('zzz', base64ToHex(uploaded_image))
-            document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+            $$('profile-img').src=`${uploaded_image}`
+            // document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
         });
         reader.readAsDataURL(this.files[0]);
     });
@@ -224,9 +225,9 @@
 
 
     function dataURLtoFile(dataurl, filename) {
-        var image = new Image();
+        var image = $$('profile-img')
         image.src = `data:image/png;base64,${dataurl}`;
-        document.body.appendChild(image);
+        // document.body.appendChild(image);
 
     }
 
