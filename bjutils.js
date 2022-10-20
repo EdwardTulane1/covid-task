@@ -22,7 +22,7 @@ function watchRequireFile(path, file) {
 function checkProfileValidity(data) {
   if (!data.profile) return false;
   profile_checks = conf.profile.map(z=>{
-    !!profile[z]
+    !!data.profile[z]
   })
   if (data.vaccins) {
     vaccins_check = data.vaccins.map(vax => {
@@ -32,7 +32,7 @@ function checkProfileValidity(data) {
   }
   if (data.tests) {
     tests_check = data.tests.map(test => {
-      return (test.id && test.test_date && ['positive', 'negative'].inclueds(test.result))
+      return (test.id && test.test_date && ['positive', 'negative'].includes(test.result))
     })
   }
   return !([...profile_checks, vaccins_check, ...tests_check].find(x=>!x))

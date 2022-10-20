@@ -188,7 +188,7 @@
         UserData.vaccins=vaccinsStruct.map(vax=>{
             let vaccinData={}
             for(let key in vax){
-                vaccinData[key]=$$(vaccinsStruct[key])?.value
+                vaccinData[key]=$$(vax[key])?.value
             }
             return vaccinData
         })
@@ -196,10 +196,10 @@
             let testData={}
             for(let key in test){
                 if(key!=='result'){
-                    testData[key]=$$(testsStruct[key])?.value
+                    testData[key]=$$(test[key])?.value
                 }
                 else{
-                    testData[key]=testsStruct[key];
+                    testData[key]=test[key];
                 }
             }
             return testData
