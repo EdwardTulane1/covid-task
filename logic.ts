@@ -29,8 +29,8 @@ async function createUser(userID, data, res):Promise<void>{
 async function  getProfile(id):Promise<{profile:Profile, tests:Test[], vaccins:vaccin[]}|null> {
     let profile=await database.runQuery(queries.getProfile(id))
     console.log('profile, ', profile)
-    let vaccins=await database.runQuery(queries.getPatientVax(id))
-    let tests=await database.runQuery(queries.getPatientTests(id)) 
+    let vaccins=(await database.runQuery(queries.getPatientVax(id))).rows
+    let tests=(await database.runQuery(queries.getPatientTests(id))).rows
     if(profile?.rows?.length>0){
         profile = profile.rows[0]
         return {

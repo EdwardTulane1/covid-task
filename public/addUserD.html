@@ -136,9 +136,26 @@
             console.log('all prof:  ', profile)
         }
         if (EDIT) {
-            [...must_attributes, ...covid_attributes].forEach(att => [
-                $$(att).value = profile[att]
-            ])
+            for (let key in profile.profile){
+                profile.profile.birth_date=profile.profile.birth_date.split('T')[0]
+                profile.vaccins.forEach(vax=>vax.vaccination_date=vax.vaccination_date.split('T')[0])
+                profile.tests.forEach(test=>test.test_date=test.test_date.split('T')[0])
+
+                try{
+                    $$(key).value=profile.profile[key];
+                }catch(e){}
+            }
+            
+            profile.vaccins.slice(-3).map((vax, i)=>{
+                for(let key in vaccinsStruct[i]){
+                    $$(vaccinsStruct[i][key]).value=vax[key]
+                }
+            })
+
+            
+
+            
+            
             console.log(HexToBase64(profile.img.data))
             let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
             $$('profile-img').src = `${uploaded_image}`

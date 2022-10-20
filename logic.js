@@ -41,8 +41,8 @@ function getProfile(id) {
     return __awaiter(this, void 0, void 0, function* () {
         let profile = yield database.runQuery(queries.getProfile(id));
         console.log('profile, ', profile);
-        let vaccins = yield database.runQuery(queries.getPatientVax(id));
-        let tests = yield database.runQuery(queries.getPatientTests(id));
+        let vaccins = (yield database.runQuery(queries.getPatientVax(id))).rows;
+        let tests = (yield database.runQuery(queries.getPatientTests(id))).rows;
         if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             profile = profile.rows[0];
             return {
