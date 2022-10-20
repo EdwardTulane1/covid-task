@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="try.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="list list-row block" id="users-list">
+                        <div class="list-item" data-id="19">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning">S</span></a></div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color" data-abc="true">Sam Kuran</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">13/12 18</div>
+                            </div>
+                        </div>
+                        <div class="list-item" data-id="7">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-primary"><img
+                                            src="https://img.icons8.com/color/48/000000/administrator-male.png"
+                                            alt="."></span></a></div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color" data-abc="true">Kinley Adolf</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">21 July</div>
+                            </div>
+                        </div>
+                        <div class="list-item" data-id="17">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning">H</span></a></div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color" data-abc="true">Velden Kamut</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">13/3/19</div>
+                            </div>
+                        </div>
+                        <div class="list-item" data-id="16">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-info">F</span></a></div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color" data-abc="true">Stuart Kim</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">03/1/19</div>
+                            </div>
+                        </div>
+                        <div class="list-item" data-id="4">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-success"><img
+                                            src="https://img.icons8.com/color/48/000000/guest-male.png"
+                                            alt="."></span></a></div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color" data-abc="true">Simply Fry</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">2 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script type="module">
+        import * as capi from './capi.js'
+        const baseurl = '18.223.164.248'
+        console.log('zzz')
+        console.log('base url:', baseurl)
+        const loginUrl = `http://${baseurl}/auth/userLogin`
+        const logoutUrl = `http://${baseurl}/auth/userOut`
+
+        function setHref(selector, url, inout) {
+            [...document.querySelectorAll(`${selector}`)].forEach((e) => { e.href = `https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}` })
+        }
+
+        setHref('[login-url]', loginUrl, `authTo/`);
+        setHref('[logout-url]', logoutUrl, `logout/`);
+
+        let data = await capi.getProfiles()
+        console.log('zzzz', data)
+        if (data.status == "OK") {
+            data.profiles.forEach(renderProductList)
+        }
+
+        function renderProductList(element, index, arr) {
+
+            let newUser=`
+                <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning"><img
+                    src="https://img.icons8.com/color/48/000000/guest-male.png" alt=".">
+                    </span></a></div>
+                <div class="flex">
+                    <a href="#" class="item-author text-color" data-abc="true">${element.first_name}  ${element.last_name}</a>
+                    <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                        for me to think about business content?</div>
+                </div>
+                <div class="no-wrap">
+                    <div class="item-date text-muted text-sm d-none d-md-block">13/12 18</div>
+                </div>`
+            let prfilesList = document.getElementById('users-list')
+
+            var user = document.createElement('div');
+            user.className='list-item'
+            user.setAttribute('data-id', element.id)
+            user.innerHTML=newUser
+            // li.setAttribute('class', 'profile');
+            // let prfilesList = document.getElementById('profiles')
+            prfilesList.appendChild(user);
+            // li.innerHTML = `<div class=profile  id=${element.id}>${element.first_name}<button act=getProfile profile_id=${element.id}>view</button></div>`
+            // JSON.stringify(element);
+        }
+
+        addEventListener('click', (e) => {
+            let ect;
+            if (!e.target || !e.target.getAttribute || !(ect = e.target.getAttribute('act'))) {//?????last part?
+                return;
+            }
+            let p = (
+                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) : 0
+            );
+
+
+            // p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
+
+        })
+        function $$(str) { return document.getElementById(str) }
+
+    </script>
+</body>
+
+</html>
