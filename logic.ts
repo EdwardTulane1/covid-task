@@ -120,7 +120,7 @@ async function positiveStats() {
     console.log(tests)
     var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
     const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24)
-    console.log(Difference_In_Days)
+    console.log(Difference_In_Days, tests.length)
     let sick_per_day = Array(Difference_In_Days).fill(0);
     let pos = 0;
     let same_day = true;
@@ -128,8 +128,11 @@ async function positiveStats() {
     //and check what day you're in!!
     let test;
     for (let i = 0; i < tests.length; i++) {
+        console.log(tests[i].test_date)
         console.log('while loop')
         test = tests[i]
+        day_index=new Date(test.test_date).getTime()/ (1000 * 3600 * 24) - day_1
+
         if (test.result === 'positive') {
             pos++;
         }
@@ -138,12 +141,7 @@ async function positiveStats() {
         }
         console.log(day_index, i,  [pos])
         sick_per_day[day_index] = pos;
-        if (tests[i].test_date === tests[i + 1]?.test_date) {
-            console.log('same')
-        }
-        else {
-            day_index++;
-        }
+        
 
 
     }
