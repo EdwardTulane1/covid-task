@@ -11,19 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const database = require('./database.js');
 const queries = require('./queries.js');
 const bjutils = require('./bjutils.js');
+console.log("zzzz data222base", database);
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let prof_call = yield database.runQuery(queries.updateProfile(data.profile.id, data.profile));
+        let prof_call = yield database.updateProfile(data.profile.id, data.profile);
         if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
-            yield database.runQuery(queries.deleteProfileVax(data.profile.id));
+            yield database.deleteProfileVax(data.profile.id);
             data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
-                yield database.runQuery(queries.setVax(vax));
+                yield database.setVax(vax);
             }));
         }
         if (!(data.tests.find(test => !bjutils.checkTestValidity(test)))) {
-            yield database.runQuery(queries.deleteProfileTests(data.profile.id));
+            yield database.deleteProfileTests(data.profile.id);
             data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
-                yield database.runQuery(queries.setTest(test));
+                yield database.setTest(test);
             }));
         }
         res.json({ status: 'OK' });
@@ -39,9 +40,9 @@ function userExists(id) {
 function getProfile(id) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        let profile = yield database.runQuery(queries.getProfile(id));
-        let vaccins = (yield database.runQuery(queries.getPatientVax(id))).rows;
-        let tests = (yield database.runQuery(queries.getPatientTests(id))).rows;
+        let profile = yield database.getProfile(id);
+        let vaccins = (yield database.getPatientVax(id)).rows;
+        let tests = (yield database.getPatientTests(id)).rows;
         if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             profile = profile.rows[0];
             profile.img = Buffer.from(profile.img, 'hex').toString('utf8');
@@ -56,7 +57,7 @@ function getProfile(id) {
 }
 function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
-        const profiles = yield database.runQuery(queries.getProfiles());
+        const profiles = yield database.getProfiles();
         profiles.rows.forEach(row => {
             row.img = Buffer.from(row.img, 'hex').toString('utf8');
         });
@@ -65,7 +66,7 @@ function getProfiles() {
 }
 function getProfilesPagination(pageNum) {
     return __awaiter(this, void 0, void 0, function* () {
-        const profiles = yield database.runQuery(queries.getProfilesPage(pageNum));
+        const profiles = yield database.getProfilesPage(pageNum);
         profiles.rows.forEach(row => {
             try {
                 row.img = Buffer.from(row.img, 'hex').toString('utf8');
@@ -94,12 +95,12 @@ function createProfile(userID, data, res) {
         if ((_a = data === null || data === void 0 ? void 0 : data.profile) === null || _a === void 0 ? void 0 : _a.img) {
             data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
         }
-        let prof_call = yield database.runQuery(queries.setProfile(data.profile));
+        let prof_call = yield database.setProfile(data.profile);
         let vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
-            yield database.runQuery(queries.setVax(vax));
+            yield database.setVax(vax);
         }));
         let test_call = data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
-            yield database.runQuery(queries.setTest(test));
+            yield database.setTest(test);
         }));
         const promises = [prof_call, ...test_call, ...vax_call];
         yield Promise.all(promises);
@@ -112,15 +113,15 @@ function createProfile(userID, data, res) {
 function deleteProfile(userID) {
     return __awaiter(this, void 0, void 0, function* () {
         let promises = [];
-        promises.push(database.runQuery(queries.deleteProfile(userID)));
-        promises.push(database.runQuery(queries.deleteProfileVax(userID)));
-        promises.push(database.runQuery(queries.deleteProfileTests(userID)));
+        promises.push(database.deleteProfile(userID));
+        promises.push(database.deleteProfileVax(userID));
+        promises.push(database.deleteProfileTests(userID));
         yield Promise.all(promises);
     });
 }
 function positiveStats(days) {
     return __awaiter(this, void 0, void 0, function* () {
-        let tests = (yield database.runQuery(queries.getPositive())).rows;
+        let tests = (yield database.getPositive()).rows;
         console.log(JSON.stringify(tests));
         tests.sort((x, y) => {
             return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
@@ -185,7 +186,7 @@ function positiveStats(days) {
         // }
     });
 }
-console.log(JSON.stringify(positiveStats(30)));
+// console.log(JSON.stringify(positiveStats(30)))
 module.exports = {
     setUserProfile,
     getProfiles,

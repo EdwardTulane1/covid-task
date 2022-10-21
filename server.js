@@ -38,7 +38,7 @@ try {
     next();
   };
 } catch (e) {
-  console.log("NO SSL", e)
+  console.log("NO SSL running HTTP")
   options = null;
   globalSTS = function (req, res, next) {
     next();

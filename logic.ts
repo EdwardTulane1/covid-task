@@ -3,20 +3,22 @@ const database = require('./database.js')
 const queries = require('./queries.js')
 const bjutils = require('./bjutils.js')
 
+console.log("zzzz data222base",database)
+
 async function updateUserProfile(userId, data, res) {
 
-    let prof_call = await database.runQuery(queries.updateProfile(data.profile.id, data.profile))
+    let prof_call = await database.updateProfile(data.profile.id, data.profile)
 
     if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
-        await database.runQuery(queries.deleteProfileVax(data.profile.id));
+        await database.deleteProfileVax(data.profile.id);
         data.vaccins.map(async (vax) => {
-            await database.runQuery(queries.setVax(vax));
+            await database.setVax(vax);
         });
     }
     if (!(data.tests.find(test => !bjutils.checkTestValidity(test)))) {
-        await database.runQuery(queries.deleteProfileTests(data.profile.id));
+        await database.deleteProfileTests(data.profile.id);
         data.tests.map(async (test) => {
-            await database.runQuery(queries.setTest(test));
+            await database.setTest(test);
         });
     }
     res.json({ status: 'OK' })
@@ -30,9 +32,9 @@ async function userExists(id): Promise<boolean> {
 }
 
 async function getProfile(id): Promise<{ profile: Profile, tests: Test[], vaccins: vaccin[] } | null> {
-    let profile = await database.runQuery(queries.getProfile(id))
-    let vaccins = (await database.runQuery(queries.getPatientVax(id))).rows
-    let tests = (await database.runQuery(queries.getPatientTests(id))).rows
+    let profile = await database.getProfile(id)
+    let vaccins = (await database.getPatientVax(id)).rows
+    let tests = (await database.getPatientTests(id)).rows
     if (profile?.rows?.length > 0) {
         profile = profile.rows[0]
         profile.img = Buffer.from(profile.img, 'hex').toString('utf8')
@@ -48,14 +50,14 @@ async function getProfile(id): Promise<{ profile: Profile, tests: Test[], vaccin
 }
 
 async function getProfiles() {
-    const profiles = await database.runQuery(queries.getProfiles())
+    const profiles = await database.getProfiles()
     profiles.rows.forEach(row => {
         row.img = Buffer.from(row.img, 'hex').toString('utf8')
     });
     return profiles.rows
 }
 async function getProfilesPagination(pageNum) {
-    const profiles = await database.runQuery(queries.getProfilesPage(pageNum))
+    const profiles = await database.getProfilesPage(pageNum)
     profiles.rows.forEach(row => {
         try {
             row.img = Buffer.from(row.img, 'hex').toString('utf8')
@@ -82,12 +84,12 @@ async function createProfile(userID, data, res) {
         data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
 
     }
-    let prof_call = await database.runQuery(queries.setProfile(data.profile))
+    let prof_call = await database.setProfile(data.profile)
     let vax_call = data.vaccins.map(async (vax) => {
-        await database.runQuery(queries.setVax(vax));
+        await database.setVax(vax);
     });
     let test_call = data.tests.map(async (test) => {
-        await database.runQuery(queries.setTest(test));
+        await database.setTest(test);
     });
 
 
@@ -104,15 +106,15 @@ async function createProfile(userID, data, res) {
 
 async function deleteProfile(userID) {
     let promises: Promise<any>[] = [];
-    promises.push(database.runQuery(queries.deleteProfile(userID)))
-    promises.push(database.runQuery(queries.deleteProfileVax(userID)))
-    promises.push(database.runQuery(queries.deleteProfileTests(userID)))
+    promises.push(database.deleteProfile(userID))
+    promises.push(database.deleteProfileVax(userID))
+    promises.push(database.deleteProfileTests(userID))
     await Promise.all(promises)
 
 }
 
 async function positiveStats(days) {
-    let tests = (await database.runQuery(queries.getPositive())).rows
+    let tests = (await database.getPositive()).rows
     console.log(JSON.stringify(tests))
     tests.sort((x, y) => {
         return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
@@ -184,7 +186,7 @@ async function positiveStats(days) {
 }
 
 
-console.log(JSON.stringify(positiveStats(30)))
+// console.log(JSON.stringify(positiveStats(30)))
 
 
 module.exports = {

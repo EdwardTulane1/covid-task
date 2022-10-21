@@ -1,5 +1,9 @@
 
+
 const conf=require('./config')
+
+const database = require('./database.js')
+console.log("zzzz database",database)
 const create_patients_table=`create table IF NOT EXISTS patients(
     id VARCHAR(60) primary key UNIQUE,
     first_name VARCHAR(50) NOT NULL,
@@ -92,18 +96,22 @@ function setProfile(data){
 }
 
 function  getProfilesPage(pageNum){
-    return `SELECT * FROM patients LIMIT ${conf.ITEMS_IN_PAGE} OFFSET ${pageNum*conf.ITEMS_IN_PAGE}`
+    const q =  `SELECT * FROM patients LIMIT ${conf.ITEMS_IN_PAGE} OFFSET ${pageNum*conf.ITEMS_IN_PAGE}`
 }
 
-function deleteProfile(id){
-    return `DELETE FROM PATIENTS WHERE id = '${id}'`
+async function deleteProfile(id){
+    const q= `DELETE FROM PATIENTS WHERE id = $1`
+    await database.runQuery({text:q, values:[id]})
 }
 
-function deleteProfileVax(id){
-    return `DELETE FROM vaccins WHERE id = '${id}'`
+async function deleteProfileVax(id){
+    const q=  `DELETE FROM vaccins WHERE id = $1`
+    await database.runQuery({text:q, values:[id]})
+
 }
-function deleteProfileTests(id){
-    return `DELETE FROM covid_test_result WHERE id = '${id}'`
+async function deleteProfileTests(id){
+    const q= `DELETE FROM covid_test_result WHERE id = $1`
+    await database.runQuery({text:q, values:[id]})
 }
 
 
