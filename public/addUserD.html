@@ -102,6 +102,8 @@
 
 <script type="module">
     import * as capi from './capi.js';
+    import {html, render} from 'https://unpkg.com/lit-html?module';
+
     
 
 
@@ -190,7 +192,10 @@
                     ect == 'delete' ? deleteProfile($$('id').value) : 0
         );
 
-        p.then((res) => { $$("res").innerHTML = JSON.stringify(res, undefined, 2) })
+        p.then((res) => { 
+            const newE=html`${JSON.stringify(res, undefined, 2)}`
+            render(newE, $$("res"))
+        })
     })
 
 

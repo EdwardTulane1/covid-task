@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <link rel="stylesheet" href="try.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
@@ -39,6 +40,8 @@
 
 
     <script type="module">
+        import {html, render} from 'https://unpkg.com/lit-html?module';
+
         import * as capi from './capi.js'
         const baseurl = '3.134.103.40'
         const loginUrl = `http://${baseurl}/auth/userLogin`
@@ -60,7 +63,7 @@
 
         function renderProductList(element, index, arr) {
 
-            let newUser = `
+            let newUser = html`
                 <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning"><img
                     src=${element.img ? element.img : "https://img.icons8.com/color/48/000000/guest-male.png"} alt=".">
                     </span></a></div>
@@ -77,7 +80,8 @@
             var user = document.createElement('div');
             user.className = 'list-item'
             user.setAttribute('data-id', element.id)
-            user.innerHTML = newUser
+            //user.innerHTML = newUser
+            render(newUser, user)
             prfilesList.appendChild(user);
 
         }
