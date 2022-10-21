@@ -121,7 +121,6 @@ function deleteProfile(userID) {
 function positiveStats(days) {
     return __awaiter(this, void 0, void 0, function* () {
         let tests = (yield database.getPositive()).rows;
-        console.log(JSON.stringify(tests));
         tests.sort((x, y) => {
             return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
         });
@@ -137,8 +136,6 @@ function positiveStats(days) {
         //and check what day you're in!!
         let test;
         for (let i = 0; i < tests.length; i++) {
-            console.log(tests[i].test_date);
-            console.log('while loop');
             test = tests[i];
             next_day_index = new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1;
             while (day_index < next_day_index) {
@@ -160,6 +157,7 @@ function positiveStats(days) {
         else {
             sick_per_day = sick_per_day.slice(-days);
         }
+        console.log(sick_per_day);
         return sick_per_day;
         // tests.map((test, i) => {
         //     if (test.result == 'positive') {
@@ -185,7 +183,7 @@ function positiveStats(days) {
         // }
     });
 }
-// console.log(JSON.stringify(positiveStats(30)))
+console.log(JSON.stringify(positiveStats(30)));
 module.exports = {
     setUserProfile,
     getProfiles,

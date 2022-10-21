@@ -114,7 +114,6 @@ async function deleteProfile(userID) {
 
 async function positiveStats(days) {
     let tests = (await database.getPositive()).rows
-    console.log(JSON.stringify(tests))
     tests.sort((x, y) => {
         return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
     })
@@ -130,8 +129,6 @@ async function positiveStats(days) {
     //and check what day you're in!!
     let test;
     for (let i = 0; i < tests.length; i++) {
-        console.log(tests[i].test_date)
-        console.log('while loop')
         test = tests[i]
         next_day_index=new Date(test.test_date).getTime()/ (1000 * 3600 * 24) - day_1
         while(day_index<next_day_index){
@@ -155,6 +152,7 @@ async function positiveStats(days) {
         sick_per_day=sick_per_day.slice(-days)
 
     }
+    console.log(sick_per_day)
     return sick_per_day
 
 
@@ -185,7 +183,7 @@ async function positiveStats(days) {
 }
 
 
-// console.log(JSON.stringify(positiveStats(30)))
+console.log(JSON.stringify(positiveStats(30)))
 
 
 module.exports = {

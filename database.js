@@ -91,9 +91,8 @@ async function getPatientTests (id){
 async function updateProfile(id, data){
 
     let query=`UPDATE patients SET `;
-    let arg_index=0;
+    let arg_index=1;
     const arg_arr=[]
- 
     for (let i=0; i<conf.profile.length; i++){
         arg=conf.profile[i]
         if(data[arg]){
@@ -101,10 +100,11 @@ async function updateProfile(id, data){
             arg_index++;
             arg_arr.push(data[arg])
         }
-        query = query.slice(0, -1);
-        query+=` WHERE id = $${arg_index}`
-        arg_arr.push(id)
+
     }
+    query = query.slice(0, -1);
+    query+=` WHERE id = $${arg_index} `
+    arg_arr.push(id)
     console.log(query, arg_arr)
     return await runQuery({text:query, values:arg_arr})
 }
