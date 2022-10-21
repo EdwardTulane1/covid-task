@@ -7,6 +7,7 @@ console.log("zzzz data222base",database)
 async function updateUserProfile(userId, data, res) {
 
     let prof_call = await database.updateProfile(data.profile.id, data.profile)
+    if(!prof_call){return res.json({status:'err', mess:'profiles struct is wrong'})}
 
     if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
         await database.deleteProfileVax(data.profile.id);
@@ -32,11 +33,13 @@ async function userExists(id): Promise<boolean> {
 
 async function getProfile(id): Promise<{ profile: Profile, tests: Test[], vaccins: vaccin[] } | null> {
     let profile = await database.getProfile(id)
-    let vaccins = (await database.getPatientVax(id)).rows
-    let tests = (await database.getPatientTests(id)).rows
+    let vaccins = (await database.getPatientVax(id))?.rows
+    let tests = (await database.getPatientTests(id))?.rows
     if (profile?.rows?.length > 0) {
         profile = profile.rows[0]
-        profile.img = Buffer.from(profile.img, 'hex').toString('utf8')
+        try{
+            profile.img = Buffer.from(profile.img, 'hex').toString('utf8')
+        }catch(e){}
         return {
             profile,
             tests,
@@ -51,16 +54,17 @@ async function getProfile(id): Promise<{ profile: Profile, tests: Test[], vaccin
 async function getProfiles() {
     const profiles = await database.getProfiles()
     profiles.rows.forEach(row => {
-        row.img = Buffer.from(row.img, 'hex').toString('utf8')
+        try{
+            row.img = Buffer.from(row.img, 'hex').toString('utf8')
+        }catch(e){}
     });
     return profiles.rows
 }
 async function getProfilesPagination(pageNum) {
     const profiles = await database.getProfilesPage(pageNum)
-    profiles.rows.forEach(row => {
+    profiles?.rows?.forEach(row => {
         try {
             row.img = Buffer.from(row.img, 'hex').toString('utf8')
-
         } catch (e) { }
     });
     return profiles.rows
@@ -68,7 +72,7 @@ async function getProfilesPagination(pageNum) {
 
 async function setUserProfile(data, res) {
     console.log('profile check', bjutils.checkProfileValidity(data))
-    if (!bjutils.checkProfileValidity(data)) return;
+    if (!bjutils.checkProfileValidity(data)) return res.json({status:'err', mess:'data is wrong'});
 
     if (await userExists(data.profile.id)) {
         return await updateUserProfile(data.id, data, res)
@@ -80,10 +84,12 @@ async function setUserProfile(data, res) {
 
 async function createProfile(userID, data, res) {
     if (data?.profile?.img) {
-        data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
-
+        try{
+            data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
+        }catch(e){}
     }
     let prof_call = await database.setProfile(data.profile)
+    if(!prof_call){return res.json({status:'err', mess:'something went wrong, try again'})}
     let vax_call = data.vaccins.map(async (vax) => {
         await database.setVax(vax);
     });
@@ -95,7 +101,7 @@ async function createProfile(userID, data, res) {
     const promises = [prof_call, ...test_call, ...vax_call]
     await Promise.all(promises)
     if (promises.find(a => !a)) {
-        res.json({ status: 'err' })
+        res.json({ status: 'err', mess:'' })
 
     }
     res.json({ status: 'OK' })

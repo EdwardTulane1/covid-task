@@ -14,6 +14,9 @@ console.log("zzzz data222base", database);
 function updateUserProfile(userId, data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let prof_call = yield database.updateProfile(data.profile.id, data.profile);
+        if (!prof_call) {
+            return res.json({ status: 'err', mess: 'profiles struct is wrong' });
+        }
         if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
             yield database.deleteProfileVax(data.profile.id);
             data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
@@ -37,14 +40,17 @@ function userExists(id) {
     });
 }
 function getProfile(id) {
-    var _a;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         let profile = yield database.getProfile(id);
-        let vaccins = (yield database.getPatientVax(id)).rows;
-        let tests = (yield database.getPatientTests(id)).rows;
-        if (((_a = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+        let vaccins = (_a = (yield database.getPatientVax(id))) === null || _a === void 0 ? void 0 : _a.rows;
+        let tests = (_b = (yield database.getPatientTests(id))) === null || _b === void 0 ? void 0 : _b.rows;
+        if (((_c = profile === null || profile === void 0 ? void 0 : profile.rows) === null || _c === void 0 ? void 0 : _c.length) > 0) {
             profile = profile.rows[0];
-            profile.img = Buffer.from(profile.img, 'hex').toString('utf8');
+            try {
+                profile.img = Buffer.from(profile.img, 'hex').toString('utf8');
+            }
+            catch (e) { }
             return {
                 profile,
                 tests,
@@ -58,15 +64,19 @@ function getProfiles() {
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.getProfiles();
         profiles.rows.forEach(row => {
-            row.img = Buffer.from(row.img, 'hex').toString('utf8');
+            try {
+                row.img = Buffer.from(row.img, 'hex').toString('utf8');
+            }
+            catch (e) { }
         });
         return profiles.rows;
     });
 }
 function getProfilesPagination(pageNum) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const profiles = yield database.getProfilesPage(pageNum);
-        profiles.rows.forEach(row => {
+        (_a = profiles === null || profiles === void 0 ? void 0 : profiles.rows) === null || _a === void 0 ? void 0 : _a.forEach(row => {
             try {
                 row.img = Buffer.from(row.img, 'hex').toString('utf8');
             }
@@ -79,7 +89,7 @@ function setUserProfile(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('profile check', bjutils.checkProfileValidity(data));
         if (!bjutils.checkProfileValidity(data))
-            return;
+            return res.json({ status: 'err', mess: 'data is wrong' });
         if (yield userExists(data.profile.id)) {
             return yield updateUserProfile(data.id, data, res);
         }
@@ -92,9 +102,15 @@ function createProfile(userID, data, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         if ((_a = data === null || data === void 0 ? void 0 : data.profile) === null || _a === void 0 ? void 0 : _a.img) {
-            data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
+            try {
+                data.profile.img = '\\x' + Buffer.from(data.profile.img, 'utf8').toString('hex');
+            }
+            catch (e) { }
         }
         let prof_call = yield database.setProfile(data.profile);
+        if (!prof_call) {
+            return res.json({ status: 'err', mess: 'something went wrong, try again' });
+        }
         let vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
             yield database.setVax(vax);
         }));
@@ -104,7 +120,7 @@ function createProfile(userID, data, res) {
         const promises = [prof_call, ...test_call, ...vax_call];
         yield Promise.all(promises);
         if (promises.find(a => !a)) {
-            res.json({ status: 'err' });
+            res.json({ status: 'err', mess: '' });
         }
         res.json({ status: 'OK' });
     });
