@@ -113,6 +113,7 @@ async function deleteProfile(userID) {
 }
 
 async function positiveStats(days) {
+    console.log('days', days)
     let tests = (await database.getPositive()).rows
     tests.sort((x, y) => {
         return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
@@ -146,9 +147,11 @@ async function positiveStats(days) {
     }
     console.log('return')
     if(days-sick_per_day.length>0){
+        console.log('here')
         sick_per_day= new Array(days - sick_per_day.length).fill(0).concat(sick_per_day)
     }
     else{
+        console.log('there')
         sick_per_day=sick_per_day.slice(-days)
 
     }

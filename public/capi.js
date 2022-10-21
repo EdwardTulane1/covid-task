@@ -77,6 +77,11 @@ async function getProfile(userId) {
 
 }
 
+async function getStats(days){
+    let res=await userActionGET('stats', days)
+    return res;
+}
+
 
 export {
     getProfiles,
@@ -84,5 +89,6 @@ export {
     setProfile,
     deleteProfile,
     watchProfile,
-    getProfilesPagination
+    getProfilesPagination,
+    getStats
 }
