@@ -81,8 +81,8 @@ function setQuery(query,data,info={}){ //data={userid:12,tableid:55,sum:17.....}
     return query;
 }
 
-function getPositive(start_date, end_date){
-    `SELECT * FROM covid_test_result;`
+function getPositive(){
+     return `SELECT * FROM covid_test_result;`
 }
 
 
