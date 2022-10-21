@@ -41,6 +41,7 @@ router.post('/setProfile', async(req, res)=>{
 
 
 router.get('/deleteProfile/:userID', async(req, res)=>{
+    if(!authUser.IsItAdmin(req))return res.json({status:'err', mess:'no permission'}); 
     const profiles=await logic.deleteProfile(req.params.userID)
     
 })
