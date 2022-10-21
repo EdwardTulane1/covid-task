@@ -111,7 +111,7 @@ async function deleteProfile(userID) {
 
 }
 
-async function positiveStats() {
+async function positiveStats(days) {
     let tests = (await database.runQuery(queries.getPositive())).rows
     console.log(JSON.stringify(tests))
     tests.sort((x, y) => {
@@ -134,25 +134,27 @@ async function positiveStats() {
         test = tests[i]
         next_day_index=new Date(test.test_date).getTime()/ (1000 * 3600 * 24) - day_1
         while(day_index<next_day_index){
-            console.log(day_index, i,  pos)
             sick_per_day[day_index] = pos;
             day_index++;
         }
 
         if (test.result === 'positive') {
-            console.log('positive')
             pos++;
         }
         if (test.result === 'negative') {
-            console.log('negative')
             pos--;
         }
-        console.log(day_index, i,  pos)
         sick_per_day[day_index] = pos;
     }
     console.log('return')
-    console.log(JSON.stringify({ sick: sick_per_day, stats: tests }))
-    return { sick: sick_per_day, stats: tests }
+    if(days-sick_per_day.length>0){
+        sick_per_day= new Array(days - sick_per_day.length).fill(0).concat(sick_per_day)
+    }
+    else{
+        sick_per_day=sick_per_day.slice(-days)
+
+    }
+    return sick_per_day
 
 
     // tests.map((test, i) => {
@@ -182,7 +184,7 @@ async function positiveStats() {
 }
 
 
-console.log(JSON.stringify(positiveStats()))
+console.log(JSON.stringify(positiveStats(30)))
 
 
 module.exports = {
@@ -190,5 +192,6 @@ module.exports = {
     getProfiles,
     getProfile,
     deleteProfile,
-    getProfilesPagination
+    getProfilesPagination,
+    positiveStats
 }

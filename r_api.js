@@ -45,6 +45,11 @@ router.get('/deleteProfile/:userID', async(req, res)=>{
     
 })
 
+router.get('/stats/:days', async(req, res)=>{
+    const sick=await logic.positiveStats(req.params.days)
+    return res.json({sick})
+})
+
 
 
 
