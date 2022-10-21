@@ -19,16 +19,6 @@ async function updateUserProfile(userId,data, res){
             await  database.runQuery(queries.setTest(test));
         });
     }
-    else{
-        console.log('not valid')
-    }
-   
-    // await Promise.all(myPromises)
-    // if(myPromises.find(a=>!a)){
-    //     console.log('eeeeeeeeeeeeeerrrrrrrrrrrrrrrrrorrrrrrrrr')
-    //     res.json({status:'err', mess:'something went wrong'})
-
-    // }
     res.json({status:'OK'})
 }
 
@@ -36,13 +26,6 @@ async function updateUserProfile(userId,data, res){
 async function userExists(id):Promise<boolean>{
     if(await getProfile(id))return true;
     return false;
-
-}
-async function createUser(userID, data, res):Promise<void>{
-    if(await database.runQuery(queries.setProfile(userID, data))){
-        return res.json({status:"OK"})
-    }
-    return res.json({status:"err"})
 
 }
 
@@ -129,16 +112,36 @@ async function deleteProfile(userID){
 }
 
 async function positiveStats(){
-    const tests=await database.runQuery(queries.get_positive())
+    const tests=await database.runQuery(queries.getPositive())
     tests.sort((x,y)=>{
         new Date(x.test_date).getTime()- new Date(y.test_date).getTime();
     })
     var Difference_In_Days =(new Date(tests[tests.length-1].test_date).getTime()- new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
+    const day_1=new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24)
+    let sick_per_day = Array(Difference_In_Days).fill(0);
+
     tests.map((test,i)=>{
         if(test.result=='positive'){
-            
+            for(let x=new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1; x< Difference_In_Days; x++){
+                sick_per_day[x]++;
+            }
+        }
+        if(test.result=='negative'){
+            for(let x=new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1; x<Difference_In_Days ; x++){
+                sick_per_day[x]--;
+            }
         }
     })
+    let tests_index=0
+    for(let i=0; i<sick_per_day.length; i++){
+        let same_day=true
+        while(same_day){
+            tests[tests_index].sick_num=sick_per_day[i]
+            if(tests[tests_index].test_date===tests[tests_index+1].test_date){
+                tests_index++;
+            }
+        }
+    }
 
 }
 
