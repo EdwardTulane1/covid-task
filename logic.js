@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const database = require('./database.js');
-const queries = require('./queries.js');
 const bjutils = require('./bjutils.js');
 console.log("zzzz data222base", database);
 function updateUserProfile(userId, data, res) {

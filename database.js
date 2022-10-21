@@ -105,6 +105,7 @@ async function updateProfile(id, data){
         query+=` WHERE id = $${arg_index}`
         arg_arr.push(id)
     }
+    console.log(query, arg_arr)
     return await runQuery({text:query, values:arg_arr})
 }
 

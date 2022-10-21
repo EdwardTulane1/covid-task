@@ -1,6 +1,5 @@
 
 const database = require('./database.js')
-const queries = require('./queries.js')
 const bjutils = require('./bjutils.js')
 
 console.log("zzzz data222base",database)
