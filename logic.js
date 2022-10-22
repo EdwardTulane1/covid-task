@@ -159,9 +159,11 @@ function positiveStats(days) {
                 day_index++;
             }
             if (test.result === 'positive') {
+                console.log('positive', test.test_date, test.id);
                 pos++;
             }
             if (test.result === 'negative') {
+                console.log('negative', test.test_date, test.id);
                 pos--;
             }
             sick_per_day[day_index] = pos;
