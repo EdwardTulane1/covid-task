@@ -1,64 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
+    <link rel="stylesheet" href="try.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h1>secret</h1> 
-    <span  id="signout"> 
-        <span class="xicon-text" id="signInName"> </span> 
-        <a logout-url href="">sign out</a> 
-    </span>
-    <div id="profiles">
+
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <button style="top: 1px;
+            right: 2px;
+            position:absolute;" act="create_profile"> Create New</button>
+            <div class="row">
+                <div class="col-sm-6">
+
+
+                    <div class="list list-row block" id="users-list">
+                       
+                    </div>
+                </div>
+
+            </div>
+            <button act="next-page">next</button><button act="prev-page">prev</button>
+        </div>
     </div>
 
 
+
+
     <script type="module">
+        import {html, render} from 'https://unpkg.com/lit-html?module';
+
         import * as capi from './capi.js'
-        const baseurl='3.134.103.40'
-        console.log('zzz')
-        console.log('base url:', baseurl)
-        const loginUrl=`http://${baseurl}/auth/userLogin`
-        const logoutUrl=`http://${baseurl}/auth/userOut`
-        
-        function setHref(selector,url, inout){
-            [...document.querySelectorAll(`${selector}`)].forEach((e)=>{e.href=`https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}`})
-        }
-    
-        setHref('[login-url]',loginUrl, `authTo/`);
-        setHref('[logout-url]',logoutUrl, `logout/`);
+        const baseurl = '3.134.103.40'
+        const loginUrl = `http://${baseurl}/auth/userLogin`
+        const logoutUrl = `http://${baseurl}/auth/userOut`
+        let pageNum=1;
 
-        let data=await capi.getProfiles()
+        function setHref(selector, url, inout) {
+            [...document.querySelectorAll(`${selector}`)].forEach((e) => { e.href = `https://auth.azjs.io/googleAuth/${inout}${encodeURIComponent(url)}` })
+        }
+
+        setHref('[login-url]', loginUrl, `authTo/`);
+        setHref('[logout-url]', logoutUrl, `logout/`);
+
+        let data = await capi.getProfilesPagination(pageNum)
         console.log('zzzz', data)
-        if(data.status=="OK"){
-            data.profiles.forEach(renderProfileList)
-        }
-        
-        function renderProfileList(element, index, arr) {
-            var li = document.createElement('li');
-            li.setAttribute('class','profile');
-            let prfilesList=document.getElementById('profiles')
-            prfilesList.appendChild(li);
-            li.innerHTML=`<div class=profile  id=${element.id}>${element.first_name}<button act=getProfile profile_id=${element.id}>view</button></div>`
-            // JSON.stringify(element);
+        if (data.status == "OK") {
+            data.profiles.forEach(renderProductList)
         }
 
-        addEventListener('click', (e)=>{
+        function renderProductList(element, index, arr) {
+
+            let newUser = html`
+                <div><a href="#" data-abc="true"><span class="w-48 avatar gd-warning"><img
+                    src=${element.img ? element.img : "https://img.icons8.com/color/48/000000/guest-male.png"} alt=".">
+                    </span></a></div>
+                <div class="flex">
+                    <a href="#" class="item-author text-color" data-abc="true">${element.first_name}  ${element.last_name}</a>
+                    <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                        for me to think about business content?</div>
+                </div>
+                <div class="no-wrap">
+                    <div class="item-date text-muted text-sm d-none d-md-block"><button act="watch" userId="${element.id}">watch</button></div>
+                </div>`
+            let prfilesList = document.getElementById('users-list')
+
+            var user = document.createElement('div');
+            user.className = 'list-item'
+            user.setAttribute('data-id', element.id)
+            //user.innerHTML = newUser
+            render(newUser, user)
+            prfilesList.appendChild(user);
+
+        }
+
+        addEventListener('click', (e) => {
+            console.log('click')
+            console.log(e.target.getAttribute('userId'))
             let ect;
-            if (!e.target || !e.target.getAttribute || !(ect=e.target.getAttribute('act'))){//?????last part?
+            if (!e.target || !e.target.getAttribute || !(ect = e.target.getAttribute('act'))) {//?????last part?
                 return;
             }
-            let p=(
-                ect == 'getProfile' ? capi.getProfile(e.target.getAttribute('profile_id')) :0
+            console.log(ect)
+            let p = (
+                ect == 'create_profile' ? createProfile() :
+                ect == 'watch' ? watchProfile(e.target.getAttribute('userId')):
+                ect == 'next-page' ? nextPage(1):
+                ect == 'prev-page' ? nextPage(-1): 0
+ 
+
             );
-            
-            
+
+
             // p.then((res)=>{$$("res").innerHTML=JSON.stringify(res, undefined, 2)})
-            
+
         })
+        function createProfile(){
+            localStorage.removeItem('nz_profile')
+            window.location.href = "http://3.134.103.40/addUserD.html";
+
+        }
+
+        function watchProfile(userID){
+            capi.watchProfile(userID)
+        }
+        function $$(str) { return document.getElementById(str) }
+
+        async function nextPage(num){
+
+            const data= await capi.getProfilesPagination(pageNum+=num)
+            console.log(data)
+            document.getElementById('users-list').innerHTML=``
+            data.profiles.forEach(renderProductList)
+
+
+        }
+
     </script>
 </body>
+
 </html>
