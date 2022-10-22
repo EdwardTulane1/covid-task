@@ -121,9 +121,6 @@ async function deleteProfile(userID) {
 async function positiveStats(days) {
     console.log('days', days)
     let tests = (await database.getPositive()).rows
-    tests.sort((x, y) => {
-        return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
-    })
     console.log(tests)
     var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
     const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24)

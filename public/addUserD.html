@@ -156,8 +156,8 @@
 
             let pos_test=profile.tests.find(test=>test.result==='positive')
             let neg_test=profile.tests.find(test=>test.result==='negative')
-            $$('negative_date').value=neg_test.test_date
-            $$('positive_date').value=pos_test.test_date
+            $$('negative_date').value=neg_test?.test_date
+            $$('positive_date').value=pos_test?.test_date
             // console.log(HexToBase64(profile.img.data))
             // let uploaded_image =dataURLtoFile(HexToBase64(profile.img.data))
             $$('profile-img').src = `${profile.profile.img}`

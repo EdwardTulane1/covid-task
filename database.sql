@@ -1009,3 +1009,14 @@ insert into patients (id, first_name, last_name, city, street, apartement_num, b
 insert into patients (id, first_name, last_name, city, street, apartement_num, birth_date, phone, telephone) values ('0315600756', 'Xena', 'Greenlies', 'Buđanovci', 'Grover', '72328', '12/26/2021', '156-713-5205', '741-877-2702');
 insert into patients (id, first_name, last_name, city, street, apartement_num, birth_date, phone, telephone) values ('7779317587', 'Hewe', 'Burnell', 'Baruunsuu', 'Quincy', '524', '8/6/2022', '973-313-7472', '989-487-3561');
 insert into patients (id, first_name, last_name, city, street, apartement_num, birth_date, phone, telephone) values ('9527077508', 'Livvie', 'Sturgess', 'Celestynów', 'Eagan', '032', '9/1/2022', '714-890-9353', '613-804-0707');
+
+
+
+SELECT id ,test_date, result FROM tests t1 where (test_date< my_date and result='positive' AND NOT EXISTS (
+    SELECT * FROM tests where result = 'negative' and test_date<my_date and test_date> t1.test_date and id=t1.id
+))  OR test_date > my_date
+
+
+SELECT id ,test_date, result FROM covid_test_result t1 where (test_date< '2022-10-17' and result='positive' AND NOT EXISTS (
+    SELECT * FROM covid_test_result where result = 'negative' and test_date<'2022-10-17' and test_date> t1.test_date and id=t1.id
+))  OR test_date > '2022-10-17';

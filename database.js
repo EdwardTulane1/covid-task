@@ -49,12 +49,15 @@ const create_patients_table=`create table IF NOT EXISTS patients(
 const create_vaccins_table= `create table IF NOT EXISTS vaccins(
     id VARCHAR(60) NOT NULL,
     vaccination_date DATE NOT NULL,
-    factory VARCHAR(60) NOT NULL
+    factory VARCHAR(60) NOT NULL,
+    idKey SERIAL PRIMARY KEY
+
 );`
 
 const create_postitive_negative_tables=`create table IF NOT EXISTS covid_test_result(
     id VARCHAR(60) NOT NULL,
     test_date DATE NOT NULL,
+    idKey SERIAL PRIMARY KEY,
     result VARCHAR(15) NOT NULL CONSTRAINT result_value CHECK (result in ('positive', 'negative'))
 );`
 
@@ -123,8 +126,11 @@ async function setVax(vax){
 
 
 
-async function getPositive(){
-    return await runQuery(`SELECT * FROM covid_test_result;`)
+async function getPositive(start_date){
+    let q=`SELECT id ,test_date, result FROM covid_test_result t1 where (test_date< $1 and result='positive' AND NOT EXISTS (
+        SELECT * FROM covid_test_result where result = 'negative' and test_date< $1 and test_date> t1.test_date and id=t1.id
+    ))  OR test_date > $1 order by test_result ; `
+    return await runQuery({text:q, values:[start_date]})
 }
 
 
