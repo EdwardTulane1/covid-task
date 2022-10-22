@@ -23,24 +23,25 @@ function checkProfileValidity(data) {
   let profile_checks = []; vaccins_check = []; test_check = []
   if (!data.profile) return false;
   profile_checks = conf.profile_must.map(z => {
-    !!data.profile[z]
+    return !!data.profile[z]
   })
   if (data.vaccins) {
-    vaccins_check = data.vaccins.map(vax => {
+    data.vaccins = data.vaccins.filter(vax => {
       return checkVaxValidity(vax)
 
     })
   }
   if (data.tests) {
-    tests_check = data.tests.map(test => {
+    data.tests = data.tests.filter(test => {
       return checkTestValidity(test);
     })
-    tests_check.push(bothTestsCheck(data.tests))
+    test_check.push(bothTestsCheck(data.tests))
   }
-  return !([...profile_checks, vaccins_check, ...tests_check].find(x => !x))
-
-
+  console.log(test_check, profile_checks, vaccins_check, [...profile_checks, ...vaccins_check, ...test_check])
+  console.log('check', ([...profile_checks, ...vaccins_check, ...test_check].every(x => x===true)))
+  return ([...profile_checks, ...vaccins_check, ...test_check].every(x => x===true))
 }
+
 
 
 function checkVaxValidity(vax) {
@@ -48,15 +49,18 @@ function checkVaxValidity(vax) {
 }
 
 function checkTestValidity(test) {
-  if (!(test.id && test.test_date && ['positive', 'negative'].includes(test.result) && tests.length == 2)) {
+  if (!(test.id && test.test_date && ['positive', 'negative'].includes(test.result))) {
     return false
   }
+  return true;
 
 }
 
 function bothTestsCheck(tests){
   let pos_test = tests.find(t => t.result === 'positive')
   let neg_test = tests.find(t => t.result === 'negative')
+  console.log('pos ', pos_test.test_date, 'neg: ', neg_test.test_date)
+  console.log(pos_test && neg_test && pos_test.test_date <= neg_test.test_date && tests.length == 2)
   return (pos_test && neg_test && pos_test.test_date <= neg_test.test_date && tests.length == 2)
 }
 
