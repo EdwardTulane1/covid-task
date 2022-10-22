@@ -10,22 +10,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const database = require('./database.js');
 const bjutils = require('./bjutils.js');
-console.log("zzzz data222base", database);
 function updateUserProfile(userId, data, res) {
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         let prof_call = yield database.updateProfile(data.profile.id, data.profile);
         if (!prof_call) {
             return res.json({ status: 'err', mess: 'profiles struct is wrong' });
         }
-        if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
+        if (!((_a = data.vaccins) === null || _a === void 0 ? void 0 : _a.find(vax => !bjutils.checkVaxValidity(vax)))) {
             yield database.deleteProfileVax(data.profile.id);
-            data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
+            (_b = data.vaccins) === null || _b === void 0 ? void 0 : _b.map((vax) => __awaiter(this, void 0, void 0, function* () {
                 yield database.setVax(vax);
             }));
         }
-        if (!(data.tests.find(test => !bjutils.checkTestValidity(test)))) {
+        if (!((_c = data.tests) === null || _c === void 0 ? void 0 : _c.find(test => !bjutils.checkTestValidity(test)))) {
             yield database.deleteProfileTests(data.profile.id);
-            data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
+            (_d = data.tests) === null || _d === void 0 ? void 0 : _d.map((test) => __awaiter(this, void 0, void 0, function* () {
                 yield database.setTest(test);
             }));
         }

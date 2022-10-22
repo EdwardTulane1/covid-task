@@ -230,14 +230,9 @@
             }
             return testData
         })
-        
-        // covid_attributes.forEach(et => {
-        //     UserData[et] = $$(et).value
-        //     console.log(et, UserData[et])
-        // })
+
         UserData.profile.img=$$('profile-img').src
-
-
+        localStorage.setItem('nz_profile', $$('id'))
         console.log('userDate:  ', UserData)
         capi.setProfile($$('id').value, UserData)
     }
@@ -273,15 +268,8 @@
     function dataURLtoFile(dataurl, filename) {
         var image = $$('profile-img')
         image.src = `data:image/png;base64,${dataurl}`;
-        // document.body.appendChild(image);
 
     }
-
-    //Usage example:
-
-
-
-
 
 
 

@@ -2,22 +2,21 @@
 const database = require('./database.js')
 const bjutils = require('./bjutils.js')
 
-console.log("zzzz data222base",database)
+
 
 async function updateUserProfile(userId, data, res) {
-
     let prof_call = await database.updateProfile(data.profile.id, data.profile)
     if(!prof_call){return res.json({status:'err', mess:'profiles struct is wrong'})}
 
-    if (!(data.vaccins.find(vax => !bjutils.checkVaxValidity(vax)))) {
+    if (!(data.vaccins?.find(vax => !bjutils.checkVaxValidity(vax)))) {
         await database.deleteProfileVax(data.profile.id);
-        data.vaccins.map(async (vax) => {
+        data.vaccins?.map(async (vax) => {
             await database.setVax(vax);
         });
     }
-    if (!(data.tests.find(test => !bjutils.checkTestValidity(test)))) {
+    if (!(data.tests?.find(test => !bjutils.checkTestValidity(test)))) {
         await database.deleteProfileTests(data.profile.id);
-        data.tests.map(async (test) => {
+        data.tests?.map(async (test) => {
             await database.setTest(test);
         });
     }
