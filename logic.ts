@@ -120,8 +120,11 @@ async function deleteProfile(userID) {
 
 async function positiveStats(days) {
     console.log('days', days)
-    let tests = (await database.getPositive()).rows
-    console.log(tests)
+    const start_date= getDateXDaysAgo(days).toISOString().split('T')[0]
+
+    console.log('start_date', start_date)
+    let tests = (await database.getPositive(start_date)).rows
+    console.log('tests', tests)
     var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
     const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24)
     console.log(Difference_In_Days, tests.length)
@@ -188,8 +191,15 @@ async function positiveStats(days) {
 
 }
 
+function getDateXDaysAgo(numOfDays, date = new Date()) {
+    const daysAgo = new Date(date.getTime());
+    daysAgo.setDate(date.getDate() - numOfDays);
+    return daysAgo;
+  }
+  
 
-console.log(JSON.stringify(positiveStats(30)))
+
+console.log(JSON.stringify(positiveStats(1)))
 
 
 module.exports = {

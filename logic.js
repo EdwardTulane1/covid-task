@@ -137,11 +137,10 @@ function deleteProfile(userID) {
 function positiveStats(days) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('days', days);
-        let tests = (yield database.getPositive()).rows;
-        tests.sort((x, y) => {
-            return new Date(x.test_date).getTime() - new Date(y.test_date).getTime();
-        });
-        console.log(tests);
+        const start_date = getDateXDaysAgo(days).toISOString().split('T')[0];
+        console.log('start_date', start_date);
+        let tests = (yield database.getPositive(start_date)).rows;
+        console.log('tests', tests);
         var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
         const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24);
         console.log(Difference_In_Days, tests.length);
@@ -202,7 +201,12 @@ function positiveStats(days) {
         // }
     });
 }
-console.log(JSON.stringify(positiveStats(30)));
+function getDateXDaysAgo(numOfDays, date = new Date()) {
+    const daysAgo = new Date(date.getTime());
+    daysAgo.setDate(date.getDate() - numOfDays);
+    return daysAgo;
+}
+console.log(JSON.stringify(positiveStats(1)));
 module.exports = {
     setUserProfile,
     getProfiles,

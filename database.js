@@ -129,7 +129,7 @@ async function setVax(vax){
 async function getPositive(start_date){
     let q=`SELECT id ,test_date, result FROM covid_test_result t1 where (test_date< $1 and result='positive' AND NOT EXISTS (
         SELECT * FROM covid_test_result where result = 'negative' and test_date< $1 and test_date> t1.test_date and id=t1.id
-    ))  OR test_date > $1 order by test_result ; `
+    ))  OR test_date > $1 order by test_date ; `
     return await runQuery({text:q, values:[start_date]})
 }
 
