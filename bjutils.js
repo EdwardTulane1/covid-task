@@ -20,9 +20,9 @@ function watchRequireFile(path, file) {
 }
 
 function checkProfileValidity(data) {
-  let profile_checks=[]; vaccins_check=[]; test_check =[]
+  let profile_checks = []; vaccins_check = []; test_check = []
   if (!data.profile) return false;
-  profile_checks = conf.profile_must.map(z=>{
+  profile_checks = conf.profile_must.map(z => {
     !!data.profile[z]
   })
   if (data.vaccins) {
@@ -35,18 +35,29 @@ function checkProfileValidity(data) {
     tests_check = data.tests.map(test => {
       return checkTestValidity(test);
     })
+    tests_check.push(bothTestsCheck(data.tests))
   }
-  return !([...profile_checks, vaccins_check, ...tests_check].find(x=>!x))
+  return !([...profile_checks, vaccins_check, ...tests_check].find(x => !x))
 
 
 }
 
 
-function checkVaxValidity(vax){
+function checkVaxValidity(vax) {
   return (vax.id && vax.vaccination_date && vax.factory)
 }
-function checkTestValidity(test){
-  return (test.id && test.test_date && ['positive', 'negative'].includes(test.result))
+
+function checkTestValidity(test) {
+  if (!(test.id && test.test_date && ['positive', 'negative'].includes(test.result) && tests.length == 2)) {
+    return false
+  }
+
+}
+
+function bothTestsCheck(tests){
+  let pos_test = tests.find(t => t.result === 'positive')
+  let neg_test = tests.find(t => t.result === 'negative')
+  return (pos_test && neg_test && pos_test.test_date <= neg_test.test_date && tests.length == 2)
 }
 
 module.exports.watchRequireFile = watchRequireFile;
