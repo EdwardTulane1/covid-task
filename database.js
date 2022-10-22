@@ -160,7 +160,15 @@ async function deleteProfileTests(id){
     return await runQuery({text:q, values:[id]})
 }
 
+async function deleteVax(vaxId){
+    const q=` DELETE FROM vaccins WHERE idKey = $1`
+    return await runQuery({text:q, values:[vaxId]})
+}
 
+async function deleteTest(testId){
+    const q=` DELETE FROM covid_test_result WHERE idKey = $1`
+    return await runQuery({text:q, values:[testId]})
+}
 
 module.exports={
     create_patients_table,
@@ -179,7 +187,10 @@ module.exports={
     setVax,
     updateProfile,
     deleteProfileVax,
-    deleteProfileTests
+    deleteProfileTests,
+    deleteVax,
+    deleteTest
+
 
 }
 

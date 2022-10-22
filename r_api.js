@@ -66,6 +66,15 @@ router.get('/getProfilesPagination/:pageNum', async(req, res)=>{
     }
 })
 
+router.get('/deleteVax/:vaxId', async(req, res)=>{
+    await logic.delVax(req.params.vaxId);
+})
+
+
+router.get('/deleteTest/:testId', async(req, res)=>{
+    await logic.delVax(req.params.testId);
+})
+
 
 
 router.get('/getProfiles', async(req, res)=>{

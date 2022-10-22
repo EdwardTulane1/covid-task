@@ -86,11 +86,12 @@ function getProfilesPagination(pageNum) {
     });
 }
 function setUserProfile(data, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         console.log('profile check', bjutils.checkProfileValidity(data));
         if (!bjutils.checkProfileValidity(data))
             return res.json({ status: 'err', mess: 'data is wrong' });
-        if (yield userExists(data.profile.id)) {
+        if (yield userExists((_a = data.profile) === null || _a === void 0 ? void 0 : _a.id)) {
             return yield updateUserProfile(data.id, data, res);
         }
         else {
@@ -99,7 +100,7 @@ function setUserProfile(data, res) {
     });
 }
 function createProfile(userID, data, res) {
-    var _a;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         if ((_a = data === null || data === void 0 ? void 0 : data.profile) === null || _a === void 0 ? void 0 : _a.img) {
             try {
@@ -111,10 +112,10 @@ function createProfile(userID, data, res) {
         if (!prof_call) {
             return res.json({ status: 'err', mess: 'something went wrong, try again' });
         }
-        let vax_call = data.vaccins.map((vax) => __awaiter(this, void 0, void 0, function* () {
+        let vax_call = (_b = data.vaccins) === null || _b === void 0 ? void 0 : _b.map((vax) => __awaiter(this, void 0, void 0, function* () {
             yield database.setVax(vax);
         }));
-        let test_call = data.tests.map((test) => __awaiter(this, void 0, void 0, function* () {
+        let test_call = (_c = data.tests) === null || _c === void 0 ? void 0 : _c.map((test) => __awaiter(this, void 0, void 0, function* () {
             yield database.setTest(test);
         }));
         const promises = [prof_call, ...test_call, ...vax_call];
@@ -135,72 +136,49 @@ function deleteProfile(userID) {
     });
 }
 function positiveStats(days) {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('days', days);
-        const start_date = getDateXDaysAgo(days).toISOString().split('T')[0];
-        console.log('start_date', start_date);
-        let tests = (yield database.getPositive(start_date)).rows;
-        console.log('tests', tests);
-        var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
-        const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24);
-        console.log(Difference_In_Days, tests.length);
-        let sick_per_day = Array(Difference_In_Days).fill(0);
-        let pos = 0;
-        let same_day = true;
-        let day_index = 0;
-        let next_day_index = 0;
-        //and check what day you're in!!
-        let test;
-        for (let i = 0; i < tests.length; i++) {
-            test = tests[i];
-            next_day_index = new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1;
-            while (day_index < next_day_index) {
+        try {
+            const start_date = (_a = getDateXDaysAgo(days).toISOString()) === null || _a === void 0 ? void 0 : _a.split('T')[0];
+            let tests = (_b = (yield database.getPositive(start_date))) === null || _b === void 0 ? void 0 : _b.rows;
+            var Difference_In_Days = (new Date(tests[tests.length - 1].test_date).getTime() - new Date(tests[0].test_date).getTime()) / (1000 * 3600 * 24);
+            const day_1 = new Date(tests[0].test_date).getTime() / (1000 * 3600 * 24);
+            console.log(Difference_In_Days, tests.length);
+            let sick_per_day = Array(Difference_In_Days).fill(0);
+            let pos = 0;
+            let same_day = true;
+            let day_index = 0;
+            let next_day_index = 0;
+            //and check what day you're in!!
+            let test;
+            for (let i = 0; i < tests.length; i++) {
+                test = tests[i];
+                next_day_index = new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1;
+                while (day_index < next_day_index) {
+                    sick_per_day[day_index] = pos;
+                    day_index++;
+                }
+                if (test.result === 'positive') {
+                    console.log('positive', test.test_date, test.id);
+                    pos++;
+                }
+                if (test.result === 'negative') {
+                    console.log('negative', test.test_date, test.id);
+                    pos--;
+                }
                 sick_per_day[day_index] = pos;
-                day_index++;
             }
-            if (test.result === 'positive') {
-                console.log('positive', test.test_date, test.id);
-                pos++;
+            if (days - sick_per_day.length > 0) {
+                sick_per_day = new Array(days - sick_per_day.length).fill(0).concat(sick_per_day);
             }
-            if (test.result === 'negative') {
-                console.log('negative', test.test_date, test.id);
-                pos--;
+            else {
+                sick_per_day = sick_per_day.slice(-days);
             }
-            sick_per_day[day_index] = pos;
+            return sick_per_day;
         }
-        console.log('return');
-        if (days - sick_per_day.length > 0) {
-            console.log('here');
-            sick_per_day = new Array(days - sick_per_day.length).fill(0).concat(sick_per_day);
+        catch (e) {
+            console.log('e1', e);
         }
-        else {
-            console.log('there');
-            sick_per_day = sick_per_day.slice(-days);
-        }
-        console.log(sick_per_day);
-        return sick_per_day;
-        // tests.map((test, i) => {
-        //     if (test.result == 'positive') {
-        //         for (let x = new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1; x < Difference_In_Days; x++) {
-        //             sick_per_day[x]++;
-        //         }
-        //     }
-        //     if (test.result == 'negative') {
-        //         for (let x = new Date(test.test_date).getTime() / (1000 * 3600 * 24) - day_1; x < Difference_In_Days; x++) {
-        //             sick_per_day[x]--;
-        //         }
-        //     }
-        // })
-        // let tests_index = 0
-        // for (let i = 0; i < sick_per_day.length; i++) {
-        //     let same_day = true
-        //     while (same_day) {
-        //         tests[tests_index].sick_num = sick_per_day[i]
-        //         if (tests[tests_index].test_date === tests[tests_index + 1].test_date) {
-        //             tests_index++;
-        //         }
-        //     }
-        // }
     });
 }
 function getDateXDaysAgo(numOfDays, date = new Date()) {
@@ -208,12 +186,22 @@ function getDateXDaysAgo(numOfDays, date = new Date()) {
     daysAgo.setDate(date.getDate() - numOfDays);
     return daysAgo;
 }
-console.log(JSON.stringify(positiveStats(1)));
+function delVax(vaxId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield database.deleteVax(vaxId);
+    });
+}
+function delTest(testId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield database.delTest(testId);
+    });
+}
 module.exports = {
     setUserProfile,
     getProfiles,
     getProfile,
     deleteProfile,
     getProfilesPagination,
-    positiveStats
+    positiveStats,
+    delVax
 };
