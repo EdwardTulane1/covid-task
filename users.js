@@ -40,3 +40,4 @@ function validateUser(req){
 }
 
 module.exports.IsItAdmin=IsItAdmin
+

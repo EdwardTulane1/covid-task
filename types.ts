@@ -22,6 +22,7 @@ type vaccination={
 }
 
 
+
 type Test={
     test_date:string,
     result:'negative'|'positive',

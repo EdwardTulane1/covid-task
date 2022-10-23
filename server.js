@@ -78,5 +78,3 @@ const api = require('./r_api')
 app.use(cookieParser());
 app.use('/api', api)
 app.use('/auth', authFile)//!!!!
-
-
