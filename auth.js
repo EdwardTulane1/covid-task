@@ -28,13 +28,13 @@ router.get('/userLogin', async function(req,res){
       req.session.profile=req.azAuth.data;
       req.session.profile.displayName=req.azAuth.data.emails[0].value;
   
-      res.redirect(`http://${baseurl}/dataFeed.html`);
+      res.redirect(`/dataFeed.html`);
       return;
 
 })
 router.get('/userOut', (req,res)=>{
   delete req.session.profile;
-  res.redirect(`http://${baseurl}/welcome.html`);
+  res.redirect(`/welcome.html`);
   return;
    
 })
