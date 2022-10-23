@@ -7,7 +7,7 @@ The server is running on http://3.134.103.40/
 It might ask you to login, but the permissions are off, so you can ignore  
 What the project is missing (just run out of time!) :   
 It does not work with big pictures, I haven't fixed that yet.   
-Missing validition checks. like if the date recieved is not in the future or if recoving date is before getting sick date etc.    
+Missing validition checks. like if the date recieved is not in the future or if recoving date is before getting sick date, peope that went sick before they were born, etc.    
 Also, the calls don't always return and never display if the act was succesfully operated or failed   
 Oh, and pagination let you scroll to pages that don't exist   
 

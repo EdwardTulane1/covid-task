@@ -60,6 +60,7 @@ async function getProfiles() {
     return profiles.rows
 }
 async function getProfilesPagination(pageNum) {
+    if(pageNum<0){return []}
     const profiles = await database.getProfilesPage(pageNum)
     profiles?.rows?.forEach(row => {
         try {

@@ -75,6 +75,9 @@ function getProfiles() {
 function getProfilesPagination(pageNum) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        if (pageNum < 0) {
+            return [];
+        }
         const profiles = yield database.getProfilesPage(pageNum);
         (_a = profiles === null || profiles === void 0 ? void 0 : profiles.rows) === null || _a === void 0 ? void 0 : _a.forEach(row => {
             try {
