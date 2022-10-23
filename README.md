@@ -11,6 +11,10 @@ Missing validition checks. like if the date recieved is not in the future or if 
 Also, the calls don't always return and never display if the act was succesfully operated or failed   
 Oh, and pagination let you scroll to pages that don't exist   
 
+Note:
+All the details on the profile beside of the picture are a must, if you don't insert one of them it won't pass.  
+Covid data is Not a must. You can left it blank or insert part of it - it is legal.  
+
 for installing and running thr project - it's somewhat hard coded here.   
 1: please change baseurl on dataFeed and welcome and config files to your updated IP/doamin.    
 2: npm install   
