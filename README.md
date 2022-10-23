@@ -15,7 +15,8 @@ for installing and running thr project - it's somewhat hard coded here.
 1: please change baseurl on dataFeed and welcome and config files to your updated IP/doamin.    
 2: npm install   
 3: set postgress on your machine, if you set it somewhere else, you'll have to update the connection settings (in config and database files)   
-4: 
+4: create database names covid
+5: npm start
 
 
 Home page - all profiles. login from base Url (http://3.134.103.40/) or just manually go to http://3.134.103.40/dataFeed.html   
