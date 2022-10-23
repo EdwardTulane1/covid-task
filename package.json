@@ -10,6 +10,9 @@
     "pg": "^8.8.0",
     "postgres-bytea": "^3.0.0"
   },
+  "scripts": {
+    "start": "sudo node --insecure-http-parser server.js"
+  },
   "devDependencies": {
     "@types/node": "^18.11.0",
     "typescript": "^4.8.4"

@@ -70,7 +70,6 @@ async function getProfilesPagination(pageNum) {
 }
 
 async function setUserProfile(data, res) {
-    console.log('profile check', bjutils.checkProfileValidity(data))
     if (!bjutils.checkProfileValidity(data)) return res.json({status:'err', mess:'data is wrong'});
 
     if (await userExists(data.profile?.id)) {

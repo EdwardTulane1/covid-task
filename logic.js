@@ -88,7 +88,6 @@ function getProfilesPagination(pageNum) {
 function setUserProfile(data, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('profile check', bjutils.checkProfileValidity(data));
         if (!bjutils.checkProfileValidity(data))
             return res.json({ status: 'err', mess: 'data is wrong' });
         if (yield userExists((_a = data.profile) === null || _a === void 0 ? void 0 : _a.id)) {

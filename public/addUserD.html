@@ -232,7 +232,7 @@
         })
 
         UserData.profile.img=$$('profile-img').src
-        localStorage.setItem('nz_profile', $$('id'))
+        localStorage.setItem('nz_profile', $$('id').value)
         console.log('userDate:  ', UserData)
         capi.setProfile($$('id').value, UserData)
     }
