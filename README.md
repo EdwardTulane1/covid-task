@@ -13,4 +13,4 @@ for installing and running thr project - it's somewhat hard coded here.
 3: set postgress on your machine, if you set it somewhere else, you'll have to update the connection settings (in config and database files)
 4: 
 
-![alt text](https://github.com/EdwardTulane1/covid-task/blob/main/screenShot_1.png?raw=true)
+![alt text](https://github.com/EdwardTulane1/covid-task/blob/main/public/screenShot_1.png?raw=true)
